@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="ja">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta http-equiv="X-UA-Compatible" content="ie=edge">
+        <script src="./demo.js"></script>
+        <link rel="stylesheet" href="demo.css">
+        <title>Document</title>
+        <base target="_blank">
+    </head>
+    <body>
+        <header>
+            <div class="color_picker">
+                <div class="color_display">
+                    <div class="selected_color"></div>
+                    <div class="reset_button"><button class="color_reset">Reset</button></div>
+                </div>
+                <div class="color_list"></div>
+            </div>
+            <div class="search_text">
+                <input type="text" class="text_form" placeholder="タイトル、URL、時間(例:0~12)">
+            </div>
+            <div class="time_select">
+                <select name="min_time" id="min_time">
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                    <option value="13">13</option>
+                    <option value="14">14</option>
+                    <option value="15">15</option>
+                    <option value="16">16</option>
+                    <option value="17">17</option>
+                    <option value="18">18</option>
+                    <option value="19">19</option>
+                    <option value="20">20</option>
+                    <option value="21">21</option>
+                    <option value="22">22</option>
+                    <option value="23">23</option>
+                </select>
+                時〜
+                <select name="max_time" id="max_time">
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                    <option value="6">6</option>
+                    <option value="7">7</option>
+                    <option value="8">8</option>
+                    <option value="9">9</option>
+                    <option value="10">10</option>
+                    <option value="11">11</option>
+                    <option value="12">12</option>
+                    <option value="13">13</option>
+                    <option value="14">14</option>
+                    <option value="15">15</option>
+                    <option value="16">16</option>
+                    <option value="17">17</option>
+                    <option value="18">18</option>
+                    <option value="19">19</option>
+                    <option value="20">20</option>
+                    <option value="21">21</option>
+                    <option value="22">22</option>
+                    <option value="23" selected>23</option>
+                </select>
+                時
+            </div>
+            <div class="week_select">
+                <button class="weeks all_week select_week" value="ALL">ALL</button>
+                <button class="weeks" value="月">月</button>
+                <button class="weeks" value="火">火</button>
+                <button class="weeks" value="水">水</button>
+                <button class="weeks" value="木">木</button>
+                <button class="weeks" value="金">金</button>
+                <button class="weeks" value="土">土</button>
+                <button class="weeks" value="日">日</button>
+            </div>
+            
+        </header>
+        <div class="main">
+            <ul class="histry_ul">
+                <li class="browsing_day">20XX年0月00日（曜）</li>
+                <li class="histrylink">
+                    <div class="imgarea">
+                        <img src="data:image/webp;base64,UklGRuoOAABXRUJQVlA4IN4OAADwSgCdASpAAa8APm00lUikIqIhIfJ7oIANiWVu7mCk2RQlKB0dssdquLWyu/rnsM27PmL/WT9o/ez9E/nAdR16AHlr+z5/mfOO1Yhmv+y8N/Kz679v+VHE17k/2nlp/y/B34magX4z/Lv9FvSuf+YX7c/ZPNw+l81vs77AH6tf7n1D/3/gmfdv9J7AH89/rv/Q9WPPb9YewN/Of7n1lPRTIJLFMMML0+YVSg87fWeWbQoLem3hx/rt3dQY+rQcGLPS3t7nsoSMfa5Xe3egnj41LTDViegrX1CNJL9yp5UOhNJLMwtQam+nzA6GjnpSlgb1dMKkMg1VdeENA5UydVJ592y141wrXqBM6xboH6NjgLJZUSufbmNR34fNuwrvrMT1HLb1tCsU7hoNjgh4pb92CkW7odtrNERMiAklOYU9y7OomLX6NzM8aNstFkB6xYxuIBJzua0ZPWRCFL0YnUt2QgQjowt48JvPttZwpI3AT/PY+knPtNlD3gs81vnBmd/qIFmqvgGH5Ng8hPT0DKltrL9aRPZXrx4IjESL09u6zHm+jRpUia9ljQE2cbHYKxrEHei1XszUKkjWdYDkSl1NcubN9OCLbj7bWb1EQbmRwv2rLgNK5v4KjL1knzMDZ7p70ptC1nI9ZY0BVTS6dYNFD97+O5LhZC06LIaZ0iyddBQlr8AlF4Q4Ufxrh4fEJn/4tJEzPbSgO2xzKLHtlugvXmspy95BkgVYK/uAub9QMJ5TwRd25hEK29yq+Nzj6X+htrOVnfgMgWwdasN315aeKyQvzli0Mb/QC+Dkr0fFgAD+FRjO3bdxOlSv/cgH+yAd53hqF/txczza//KV8o6cbLoOfCWpWXobxN66YGg7hwmRhlFFtuw0QS21CWof4b3mx2kv952kPhHvtvVjH0x8PqJmFm/oR6JtGjEgh+ABCHd+qfZA3Kl3KXzcBb8UVvPjEdRO3w9TVDRlkg4DIaZs0INqVVXVO0AoF7e8YmsG5QT1ZmrMeCkH4e5VVYd3pYES25S3xzz8C5eLeEg5vnEi8Fatrh85MjQhetWQHgcqsh0aQmGBocDSgExjJENonjLYepF0gPkUZGo+WVv9n77aK4de5cCLVPZa9HyGvKBDlWolFpXMUiCHEOhXoz5IhfvJofiCr4kNcLn9j/4t/KH/y/a6fvl9Pd8hnVxJM4gec6bfhE7j7TnQYhWkfe9uMf0tQhtVkHNfy+SdOKmTyCJ26LN2hXYVxRN8om9Z+0L5ih9q9GlNM8ywTqu5K2uCdmpnjv7Gv0xK/RPkav37NJqKuVSjGGHQcCzKeyPfz89gDQ8jULCcUoKg/EzDCsM3SeKM7FxrddMH65Qi1qJxkexbmnD+C6V618el1/KN+Z6/6lTKAV940Z4Sxl+sa36clnMipa388TcemmPcoBwS9tzuj9wQR60x+4/iFj27CTJLVV9jgiSZJXpTOdqSA5q3U+R41dB0OcMGk6Bfrkc9AngoDQ1pQAA4Yp2dt5okvPmTAf2neXpBbB5glKYEXMPwCvk60oAk2BvrNpEL7E+eS/QV/6Y50XDWfez3xG5GcsanhOTQ3kZLmRS42X6Z62Z/3qlfRFfeT8Ej8AUeef4Nh+TJCzZlhKYu9Ps7vNWQK52J8ruThiuWswXS8FRm2nejAL9GUWT2XnZ68CmrbrRgVrkmgANTvKkqgXf5BG+NDgYsJbWm9heTkl/I/8BcQiRBHFXxFRzljXBc3yYeEpdcoJc+7nsz52Hdwhib9V1k5RnnygTgnhoSHV6gLl3vrMpdhK3AcVKkReXzCydrn0pDi1nEBCzvyEvEhN/tp6s4ooMTBCVSQdqZqjNYaU+C07O+HhEp/vD5Kh6t2wLP2Aij9M6t4xFLq9NEBxh9XEo+vVsAGvlzmeMGy+JgWZ06jLvOYXf9cGiogt6cd8k+VbSIyzsSKQB+Wqh9a+5em9Dmwa1X+FWnROhAKgBhxERnuM7Nlxqa9LjI17a8pXjFs7MP05QdEbTlrfHkaZkCjR+vQdRJabZSlKCgZyuT3iOL0etX0SYroVymCyM6PvQCxTPzF7PoA3zRIFN5fUPwQrNiOuxR/okd0mWTue14PJTeF6Q5anDB1mdIGUAYGCaQt3YF75+93uBDEMilEbfIR7DTeBG+wcwKZbnOMU2DyBy+ivxN6wKhXHro4ZOz8PqrLWWlGM+hfmP+31biuSpxCoOoG+vf1oN5u7GQSBbcHGhFnSmm4QEvzStOid8XjGujrEAkifI7l7vtYYtWlwjnpxKQIU3n9Z049V9f/PRjMskgADV/oe+f7/Io97gmmCzY2kAwwf8PXuaD0PzEfCsBqp6taJYfL7IkDBSQyS8Aqf4gqhJqFkptbzQ6iB2d+BQAJyD274XlLHjG87MVf+70odsNhJOChcvBPFfO/xAjgpEout0+60Btp2eDsGv7i16rf8QAAF4eKNgM79cYPovLzVYqLmYnT7gehfGgfyiWUPk9bCnZ6dARK5kGzQ6LybxdF13SWw2NCjA8LQt7iELH8akWtN5GNkO/bqu+zjx3bDIc5RoTATU6XF7ciePzkTFUIoPvvG39a4mjth4X5WLkoWZ5gDjaHEgSdipJPnSSf079szpHDg16nfWLzHMlmqaR1OGMy1/R3Py5sM0ZF32Eu0s+mZF/T6OPHWZTeYOGHv4gPX0Z6hniy1sxdAoah/K+V6rgYc+BuwIyXzzhu8NnVVYF1xfhZo/o5EUJfn5N3oZhAkV1e84fdOe0J254nh9Hc6a8mcNyRo/S+q6PdS5v0fHLq7x6wjrw2MDJAEAYut758jJNXc73Ne+5bbiGJcpRLN/kEhbcMfpN6iEbcwmR+uV51f6Qw6QsW+D9qY0H5Sl3LPrnNRGvJY9aWm73+Ou3seh1lHBbyeMUzfzHeS1pxrp5dYH1sWP29+aFFsT9Ow9VN7waNz+D8XwhIRRDJOxcYL5PdMQ9nFqUDVij32rODOLFDZH4YJtG0/oT6VU27MnlKsG+qFPa26NK4cf2v/MaAsB12d6ogmcfLBh1mPK7YtdIwxPjM2cibdkHY+rU1K0KawLhc0h3tjXvbcgAlbcRF9lavU9e4YmXCUYmvjZEez1XnOYYMSlWPdblvLTxgtOJdslnxyuQpeUoFX8bOnQh0VuK6iIxskudS05581ekHiRhOypyqRlSewPFgY/RJ+Uoi90k6mhG443T6LeX4P2lXmJnBw962Yn3L/nMXp62rmm1Av+ov1JqIbOopRIP3sQCwpj1LZ16DVnLpcjUD/D8ehg/Q3LFDmXgYVH+M0yEOFfS+4ADD21etfJK1fKnXx5eGs65VBVSzC4Cf4BFrgmtkqkT8HpKNqK3pnTejWXSmijOmrKFuwJSwInQMj+XObXsNTSvSfWRHxZsrXp726gd/udMOKOh0jm2LscI5wViBbT7ehwMErOdPjK05nLKrSxrDAt4347X9RZzNqRlKIQuJpx/IRMWRNlwau0P2ZsvDNZv/KxSNsuyvLHthy8Qt+aXTMYiu9jl7ZXx0gaOALXnhKtPKLZUkPcDt1yg8WxE9gbcPd4Ury8qlXSdIgw4l+hDXDD2BBFPtHCvlzwtLAefGq2kB4021u3j09F/RqKNXxcFAwfthd7LaivuMRolk9GCTb+DrAMc95UaHOzflMdlMc21gSGP10yXzxKMGa4yBwtBmd4bwrreM8l0q87cCJYSMgSQLJ81i5IsVBJGJg4rjQsfrqW76H4F5eFkyPInLSWNp+oDqP7hsu6/ECMK+C9IiNu/QzHWV7MYQ8Uf5vp9ljnITUSydZ/KA2Clo7nEOo3qXuwWap96Brh7lOEcC+s7SxjrieQutlIbCZ/5BiNGCCBpiXt3Jra42gXr9ZO7LIzNQ/EBoelkTHDY+GwZGkehVHHe0JUD/B8ex9PHUly2FKdKZRxz5OMwbKlsYSsZpcDNMXmAcSXW0DPd69H/EWKSxrlI3CFXcOt5RExS4sEn2atF1xOjJ71KO5EX9F4KnzSPoMZlni+OV/p3Ewnjho1xRBefPOCzBpk+acZ2Ie5RYvYGUmbw+HD+f/kaRrG2u+5q27Q9KZhgYbSKGWnsWxbWVcU4d758NRPo0QYUWHDGbW94cybbvZGKZiHYJaXneDUZPHr96SXCKG6hMpniJvnObp5nhjRhAAA7/f+JQwa/y0n3et922D+GmBf0Wl8vv0g2uixQ+WsEIsdVXAk6MjR2HinAYkcwowAGC18xmp5QTceS6BL280ivmAESEgMIw2zf0od0OvtZKnwmO0LC3COWmV9Aui4O8ZtXxFUh/MEmwTLeq6WLgSOTKLgHXToerh3dZMADj4js6wo7Py3BeI/O09FU1Ok2K/RHwiDBJpDnUYh/RzMrQ/QZDXUVAdzh8IMnXzEN5DUFN5ykGFX8zwyEOiVYIuPO9C9k87iGXg0YtG8RFrBpNiSTimliJUd6hGds16TT9eIxxvCtRXjay2Uelnmmx2AONjrNFyfVMwrDWjASStr0w7Iy0+MtpSMPhbSgO3hIKIi+ivJkX7kgmm8uNAO3BXtmNRVjz1IxcHuvr6/e3bMnGP08NvIpdxymVjKglIBXyqiWzl2cw2eUnGieJ0LJ7SzY/phAQaOQJGQ+myxln/e995HjwmYnx+yvj1V+I5k0Wd/A8mbdHaIlTX/3kQtYedDzr0S2hQpRpeEHDFY8YxxPT3/YHyWcz2oIDK9rRU21qQ85U8122ygZ2wR1WD4TOZGjJTPNmvvtKyKlnydHYAeLCduVcXV5Hp5ufzgSdmmoIowzQM1rkx+XpfjCqZcZliNIsPf9oTnV0JCJW2dvlULKNWDsMtlhb1ZaFoI4O7xjMRQfZM5GExrnBAAQv4346t3vEfkfGWcA0hGrjRajs9CHXlMwmW0SptRMbknntpvdA+7n4LETTue9SMmIuHIFPrm2bHyAJPpkXikq8P6wdn38euJ0CqyZPLTf/QT0Mjj4irW0f1YGCHRTqvGOXafgmevlN4RRwG0WdgEwCHpfdCL3kOl9u6jBfUnle7REyIzaOF2KIdzwPFI7POGZFaXjqTOD6tOrzeSukfO0HWAAAA==">
+                    </div>
+                    <div class="sitedate">
+                        <p class="title">EC2へのSSH接続でPermission denied (publickey). が出たとき - Qiita</p>
+                        <p class="url" href="https://qiita.com/aroundFifty/items/0896d6b7b0b3e2987035">https://qiita.com/aroundFifty/items/0896d6b7b0b3e2987035</p>
+                        <p class="time">2019年9月24日 23:11:51</p>
+                    </div>
+                    <a class="link" href="https://qiita.com/aroundFifty/items/0896d6b7b0b3e2987035">
+                        <div class="link_action">
+                            <button class="delete_button">X</button>
+                        </div>
+                    </a>
+
+                </li>
+            </ul>
+            <nav>
+                <ul class="history_nav">
+                    <li><a href="">20XX年0月00日（曜）</a></li>
+                </ul>
+            </nav>
+        </div>
+    </body>
+</html>

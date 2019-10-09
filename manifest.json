@@ -1,0 +1,31 @@
+{
+    "name": "卒研テスト用",
+    "version": "0.0.1",
+    "manifest_version": 2,
+    "description": "頑張ろう卒研",
+    "permissions": [
+        "activeTab",
+        "tabs" ,
+        "storage",
+        "unlimitedStorage",
+        "browsingData",
+        "notifications",
+        "http://*/*",
+        "https://*/*",
+        "file://*/*",
+        "<all_urls>"
+    ],
+    "content_scripts": [
+      {
+        "matches": ["<all_urls>"],
+        "js": ["color-classifier.min.js","html2canvas.js","script.js"],
+        "run_at": "document_idle"
+      }
+    ],
+    "background": {
+        "scripts": ["color-classifier.min.js","background.js"]
+    },
+    "browser_action": {
+    }
+    
+  }

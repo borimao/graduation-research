@@ -1,0 +1,276 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+html,body{
+    width: 100%;
+    height: 100%;
+}
+button{
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    outline: none;
+    padding: 0;
+    appearance: none;
+}
+ul{
+    list-style: none;
+}
+
+$color1: rgb(0, 217, 255);
+$color2: rgb(240, 240, 240);
+$color3: rgb(43, 43, 43);
+
+//header--------------------------------------------------
+header{
+    display: flex;
+    height: 80px;
+    box-shadow: 1px 1px 10px rgb(172, 172, 172);
+    position:relative;
+    z-index:2;
+    background-color: #fff;
+}
+.color_picker{
+    width: 240px;
+    height: 40px;
+    z-index: 2;
+    .color_list{
+        width: 240px;
+        height: 0;
+        transition: 0.5s;
+        overflow: hidden;
+        font-size: 0;
+        .color_button{
+            font-size: 20px;
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            outline: none;
+            appearance: none;
+            background-color: #fff;
+            width: 20px;
+            height: 20px;
+        }
+    }
+    .color_display{
+        width: 240px;
+        height: 40px;
+        background-color: #000;
+        display: flex;
+        .selected_color{
+            width: calc(50% - 8px);
+            height: calc(100% - 8px);
+            background-color: rgb(255, 255, 255);
+            margin: 4px;
+        }
+        .reset_button{
+            width: calc(50% - 8px);
+            height: calc(100% - 8px);
+            background-color: #fff;
+            margin: 4px;
+            button{
+                margin: 2px;
+                background-color: #000;
+                color: #fff;
+                width: calc(100% - 4px);
+                height: calc(100% - 4px);
+                font-size: 20px;
+            }
+        }
+    }
+    &:hover{
+        .color_list{
+            height: 100px;
+        }
+    }
+    
+}
+.search_text{
+    .text_form{
+        padding: 10px;
+        border:0;
+        font-size:1.3em;
+        font-family:Arial, sans-serif;
+        color:#aaa;
+        border:solid 1px #ccc;
+        width:300px;
+    }
+}
+.time_select{
+    select{
+        outline:none;
+        text-indent: 0.01px;
+        text-overflow: '';
+        background: none transparent;
+        vertical-align: middle;
+        font-size: inherit;
+        color: inherit;
+    }
+}
+.week_select{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 5px;
+    width: 250px;
+    height: 40px;
+    .weeks{
+        background-color: #fff;
+        border-radius: 50px;
+        font-size: 15px;
+        border: solid 1px rgb(201, 201, 201);
+        width: 25px;
+        height: 25px;
+        &:hover{
+            border: solid 1px rgb(0, 217, 255);
+        }
+    }
+    .all_week{
+        width: 50px;
+    }
+    .select_week{
+        border: solid 1px rgb(0, 217, 255);
+        box-shadow: 1px 1px 10px rgb(0, 217, 255);
+    }
+}
+
+
+.main{
+    width: 100%;
+    height: calc(100% - 80px);
+    background-color: rgb(250, 250, 250);
+    display: flex;
+    justify-content: center;
+    .histry_ul{
+        width: 900px;
+        height: 100%;
+        overflow: scroll;
+        background-color: #fff;
+        box-shadow: 1px 1px 5px rgb(172, 172, 172);
+    }
+    .browsing_day{
+        border-top: #000 solid 1px;
+        border-bottom: #000 solid 1px;
+        font-size: 20px;
+        padding-left: 20px;
+        height: 40px;
+        line-height: 40px;
+        background-color: $color3;
+        color: #fff
+    }
+    .histrylink{
+        max-width: 100%;
+        margin: 0 auto;
+        display: flex;
+        position: relative;
+        .imgarea{
+            margin: 10px;
+            width: 256px;
+            height: 160px;
+            display: flex;
+            align-items: center;
+            background-color: $color2;
+            img{
+                width: 100%;
+            }
+        }
+        .sitedate{
+            margin: 10px;
+            width: auto;
+            max-width: calc(100% - 296px);
+            .title{
+                font-size: 20px;
+            }
+            .url{
+                font-size: 12px;
+                width: 100%;
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                text-decoration: underline;
+            }
+            .time{
+                font-size: 18px;
+            }
+        }
+        .link{
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            .link_action{
+                position: absolute;
+                top: 0;
+                right: 0;
+                margin: 5px;
+                width: 30px;
+                height: 30px;
+                background-color: #000;
+                opacity: 0.6;
+                .delete_button{
+                    width: 100%;
+                    height: 100%;
+                    color: #fff;
+                    &:hover{
+                        color: red;
+                    }
+                }
+            }
+            &:hover{
+                opacity: 1;
+            }
+        }
+        &:hover{
+            background-color: $color2;
+        }
+    }
+
+    nav{
+        width: 200px;
+        height: 400px;
+        overflow: scroll;
+        margin-left: 15px;
+        margin-top: 15px;
+        background-color: #fff;
+        box-shadow: 1px 1px 5px rgb(172, 172, 172);
+        .history_nav{
+            li{
+                position: relative;
+                margin: 10px 5px 10px 5px;
+                font-size: 18px;
+                text-align: center;
+                width: 190px;
+                height: 30px;
+                line-height: 30px;
+                border-radius: 50px;
+                cursor: pointer;
+                transition: 0.2s;
+                a{
+                    color: #000;
+                    text-decoration: none;
+                    position: absolute;
+                    top: 0;
+                    left: 0;
+                    width: 100%;
+                    height: 100%;
+                }
+                &:hover{
+                    background-color: $color3;
+                    a{
+                        color: #fff;
+                    }
+                    
+                }
+            }
+            .now_scroll{
+                background-color: $color3;
+                a{
+                    color: #fff;
+                }
+            }
+        }
+    }
+}

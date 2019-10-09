@@ -1,0 +1,26 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  width: 3000px;
+  height: 3000px;
+}
+
+.history_area {
+  width: 100%;
+  height: 100%;
+  background-color: red;
+}
+
+.blue {
+  background-color: blue;
+}
+
+#c_change {
+  width: 400px;
+  height: 150px;
+  font-size: 60px;
+}
+/*# sourceMappingURL=popup.css.map */
