@@ -25,11 +25,13 @@ $color3: rgb(43, 43, 43);
 //header--------------------------------------------------
 header{
     display: flex;
-    height: 80px;
+    height: 75px;
     box-shadow: 1px 1px 10px rgb(172, 172, 172);
     position:relative;
     z-index:2;
     background-color: #fff;
+    padding-top: 5px;
+    padding-left: 20px;
 }
 .color_picker{
     width: 240px;
@@ -86,16 +88,47 @@ header{
     }
     
 }
-.search_text{
+.search_form{
     .text_form{
-        padding: 10px;
+        padding: 5px 10px;
         border:0;
         font-size:1.3em;
         font-family:Arial, sans-serif;
-        color:#aaa;
+        color:$color3;
         border:solid 1px #ccc;
-        width:300px;
+        width: 400px;
+        height: 28px;
+        &:checked{
+            border:solid 1px $color1;
+        }
     }
+    .week_select{
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0 5px;
+        width: 300px;
+        height: 30px;
+        .weeks{
+            background-color: #fff;
+            border-radius: 50px;
+            font-size: 15px;
+            border: solid 1px rgb(201, 201, 201);
+            width: 25px;
+            height: 25px;
+            &:hover{
+                border: solid 1px rgb(0, 217, 255);
+            }
+        }
+        .all_week{
+            width: 50px;
+        }
+        .select_week{
+            border: solid 1px rgb(0, 217, 255);
+            box-shadow: 1px 1px 10px rgb(0, 217, 255);
+        }
+    }
+    
 }
 .time_select{
     select{
@@ -106,32 +139,6 @@ header{
         vertical-align: middle;
         font-size: inherit;
         color: inherit;
-    }
-}
-.week_select{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0 5px;
-    width: 250px;
-    height: 40px;
-    .weeks{
-        background-color: #fff;
-        border-radius: 50px;
-        font-size: 15px;
-        border: solid 1px rgb(201, 201, 201);
-        width: 25px;
-        height: 25px;
-        &:hover{
-            border: solid 1px rgb(0, 217, 255);
-        }
-    }
-    .all_week{
-        width: 50px;
-    }
-    .select_week{
-        border: solid 1px rgb(0, 217, 255);
-        box-shadow: 1px 1px 10px rgb(0, 217, 255);
     }
 }
 

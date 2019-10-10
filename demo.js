@@ -41,10 +41,10 @@ window.onload = ()=>{
         TextSet();
     })
     document.querySelector('#min_time').addEventListener('change', () => {
-        MinTimeSet();
+        CoalReadFile()
     });
     document.querySelector('#max_time').addEventListener('change', () => {
-        MaxTimeSet();
+        CoalReadFile()
     })
 
     document.querySelector('.delete_button').addEventListener('click', (e) => {
@@ -64,7 +64,6 @@ window.onload = ()=>{
     CoalReadFile();
 
     document.querySelector('.histry_ul').onscroll = function() {
-        console.log(this.scrollTop);
         for(let i=0; i<file_links.length; i++){
             if(file_top[i] <= this.scrollTop && this.scrollTop < file_bottom[i]){
                 file_links[i].classList.add('now_scroll');
@@ -263,6 +262,13 @@ const ReadFile = (array) => {
                                         let result = [];
                                         const min_num = Number(min_time.value);
                                         const max_num = Number(max_time.value);
+                                        if(min_num > max_num){
+                                            for(let i=0; i<obj.length; i++){
+                                                if(((min_num <= obj[i].hour) && (obj[i].hour <= 23)) || ((0 <= obj[i].hour) && (obj[i].hour <= max_num))){
+                                                    result.push(obj[i]);
+                                                }
+                                            }
+                                        }
                                         for(let i=0; i<obj.length; i++){
                                             if((min_num <= obj[i].hour) && (obj[i].hour <= max_num)){
                                                 result.push(obj[i]);
@@ -336,7 +342,10 @@ const ReadFile = (array) => {
     } else {
         console.log('finished');
         file_links = document.querySelectorAll('.one_day_file_link');
-        file_links[0].classList.add('now_scroll');
+        if(file_links[0]){
+            file_links[0].classList.add('now_scroll');
+        }
+       
     }
 }
 
@@ -376,32 +385,6 @@ const DeleteLink = (filename, id) => {
         },);
     });
 }
-/*
-const TextSet = () => {
-    search_text = document.querySelector('.text_form').value.toLowerCase()
-    if(search_text.match(/^([0-9]|[1-2][0-9])~([0-9]|[1-2][0-9])$/)){
-        console.log("best match!!!")
-        const time = search_text.split('~');
-        const min_time = document.querySelector('#min_time');
-        const max_time = document.querySelector('#max_time');
-        if(Number(time[0]) > Number(time[1])){
-            max_time.value = time[0];
-            min_time.value = time[0];
-        }else{
-            max_time.value = time[1];
-            min_time.value = time[0];
-        }
-        search_text = "";
-    }else{
-        console.log("no match...")
-    }
-    console.log(search_text);
-    chrome.storage.local.get("test3", (value) => {
-        document.querySelector('ul').innerHTML = null;
-        ReadFile(value.test3);
-    });
-}
-*/
 
 const TextSet = () => {
     const text = document.querySelector('.text_form').value.toLowerCase()
@@ -416,13 +399,14 @@ const TextSet = () => {
             const time = search_text[i].split('~');
             const min_time = document.querySelector('#min_time');
             const max_time = document.querySelector('#max_time');
-            if(Number(time[0]) > Number(time[1])){
-                max_time.value = time[0];
-                min_time.value = time[0];
-            }else{
-                max_time.value = time[1];
-                min_time.value = time[0];
+            if(Number(time[0]) > 23){
+                time[0] = "23";
             }
+            if(Number(time[1]) > 23){
+                time[1] = "23";
+            }
+            min_time.value = time[0];
+            max_time.value = time[1]
             search_text.splice(i,1);
             i--;
         }else{
@@ -434,22 +418,8 @@ const TextSet = () => {
     CoalReadFile()
 }
 
-const MinTimeSet = () => {
-    const min_time = document.querySelector('#min_time');
-    const max_time = document.querySelector('#max_time');
-    if(Number(min_time.value) > Number(max_time.value)){
-        max_time.value = min_time.value;
-    }
-    CoalReadFile()
-}
-const MaxTimeSet = () => {
-    const min_time = document.querySelector('#min_time');
-    const max_time = document.querySelector('#max_time');
-    if(Number(min_time.value) > Number(max_time.value)){
-        min_time.value = max_time.value;
-    }
-    CoalReadFile()
-}
+
+
 
 
 
