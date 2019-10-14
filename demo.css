@@ -38,21 +38,29 @@ header {
 }
 
 .color_picker {
-  width: 240px;
-  height: 40px;
+  height: 70px;
   z-index: 2;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  overflow: hidden;
 }
 
-.color_picker .color_list {
-  width: 240px;
-  height: 0;
-  -webkit-transition: 0.5s;
-  transition: 0.5s;
-  overflow: hidden;
+.color_picker .color_accordion {
+  width: 0;
+  right: 0;
+  -webkit-transition: 0.2s;
+  transition: 0.2s;
+}
+
+.color_picker .color_accordion .color_list {
+  width: 168px;
+  min-width: 168px;
+  height: 75px;
   font-size: 0;
 }
 
-.color_picker .color_list .color_button {
+.color_picker .color_accordion .color_list .color_button {
   font-size: 20px;
   background-color: transparent;
   border: none;
@@ -62,44 +70,58 @@ header {
      -moz-appearance: none;
           appearance: none;
   background-color: #fff;
+  width: 14px;
+  height: 14px;
+}
+
+.color_picker .open_accordion {
+  width: 168px;
+}
+
+.color_picker .ac_switch {
   width: 20px;
-  height: 20px;
+  height: 100%;
+  padding: 0 0 0 5px;
+  background-color: #2b2b2b;
+  border-left: #000 solid 2px;
+  color: #fff;
+  font-size: 20px;
+}
+
+.color_picker .open_switch {
+  -webkit-transform: rotate(180deg);
+          transform: rotate(180deg);
 }
 
 .color_picker .color_display {
-  width: 240px;
-  height: 40px;
-  background-color: #000;
-  display: -webkit-box;
-  display: -ms-flexbox;
-  display: flex;
+  width: 35px;
+  min-width: 35px;
+  height: 70px;
+  background-color: #2b2b2b;
 }
 
 .color_picker .color_display .selected_color {
-  width: calc(50% - 8px);
-  height: calc(100% - 8px);
+  width: calc(100% - 8px);
+  height: calc(50% - 8px);
   background-color: white;
   margin: 4px;
 }
 
 .color_picker .color_display .reset_button {
-  width: calc(50% - 8px);
-  height: calc(100% - 8px);
+  width: calc(100% - 8px);
+  height: calc(50% - 8px);
   background-color: #fff;
   margin: 4px;
+  margin-top: 8px;
 }
 
 .color_picker .color_display .reset_button button {
   margin: 2px;
-  background-color: #000;
+  background-color: #2b2b2b;
   color: #fff;
   width: calc(100% - 4px);
   height: calc(100% - 4px);
   font-size: 20px;
-}
-
-.color_picker:hover .color_list {
-  height: 100px;
 }
 
 .search_form .text_form {

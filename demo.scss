@@ -34,46 +34,68 @@ header{
     padding-left: 20px;
 }
 .color_picker{
-    width: 240px;
-    height: 40px;
+    height: 70px;
     z-index: 2;
-    .color_list{
-        width: 240px;
-        height: 0;
-        transition: 0.5s;
-        overflow: hidden;
-        font-size: 0;
-        .color_button{
-            font-size: 20px;
-            background-color: transparent;
-            border: none;
-            cursor: pointer;
-            outline: none;
-            appearance: none;
-            background-color: #fff;
-            width: 20px;
-            height: 20px;
+    display: flex;
+    overflow: hidden;
+    .color_accordion{
+        width: 0;
+        right: 0;
+        transition: 0.2s;
+        .color_list{
+            width: 168px;
+            min-width: 168px;
+            height: 75px;
+            font-size: 0;
+            .color_button{
+                font-size: 20px;
+                background-color: transparent;
+                border: none;
+                cursor: pointer;
+                outline: none;
+                appearance: none;
+                background-color: #fff;
+                width: 14px;
+                height: 14px;
+            }
         }
     }
+    .open_accordion{
+        width: 168px;
+    }
+    .ac_switch{
+        width: 20px;
+        height: 100%;
+        padding: 0 0 0 5px;
+        background-color: $color3;
+        border-left: #000 solid 2px;
+        color: #fff;
+        font-size: 20px
+    }
+    .open_switch{
+        transform: rotate(180deg)
+    }
+    
     .color_display{
-        width: 240px;
-        height: 40px;
-        background-color: #000;
-        display: flex;
+        width: 35px;
+        min-width: 35px;
+        height: 70px;
+        background-color: $color3;
         .selected_color{
-            width: calc(50% - 8px);
-            height: calc(100% - 8px);
+            width: calc(100% - 8px);
+            height: calc(50% - 8px);
             background-color: rgb(255, 255, 255);
             margin: 4px;
         }
         .reset_button{
-            width: calc(50% - 8px);
-            height: calc(100% - 8px);
+            width: calc(100% - 8px);
+            height: calc(50% - 8px);
             background-color: #fff;
             margin: 4px;
+            margin-top: 8px;
             button{
                 margin: 2px;
-                background-color: #000;
+                background-color: $color3;
                 color: #fff;
                 width: calc(100% - 4px);
                 height: calc(100% - 4px);
@@ -81,12 +103,6 @@ header{
             }
         }
     }
-    &:hover{
-        .color_list{
-            height: 100px;
-        }
-    }
-    
 }
 .search_form{
     .text_form{

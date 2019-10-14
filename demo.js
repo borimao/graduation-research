@@ -52,6 +52,11 @@ window.onload = ()=>{
        console.log("fdfs");
     });
 
+    document.querySelector('.ac_switch').addEventListener('click', (e) => {
+        document.querySelector('.color_accordion').classList.toggle('open_accordion');
+        e.target.classList.toggle('open_switch');
+    })
+
     const weeks = document.querySelectorAll('.weeks');
     weeks.forEach((element) => {
         element.addEventListener('click', (e) => {
@@ -126,6 +131,9 @@ const CoalReadFile = () =>{
     document.querySelector('.histry_ul').innerHTML = null;
     document.querySelector('.history_nav').innerHTML = null;
     file_height = [];
+    file_top = [];
+    file_bottom = [];
+    file_links = [];
     chrome.storage.local.get("test3", (value) => {
         ReadFile(value.test3);
     });
@@ -165,22 +173,7 @@ const ReadFile = (array) => {
                             if(select_week === 'ALL' || select_week === date[3]){
                                 console.log(select_week);
                                 console.log(search_text)
-                                let history_nav = document.querySelector('.history_nav');
-                                let nav_a = document.createElement('a');
-                                nav_a.innerText = reed_day;
-                                console.log(reed_day);
-                                nav_a.addEventListener('click', (e) => {
-                                    console.log(reed_day);
-                                    document.querySelectorAll('.now_scroll').forEach((element) => {
-                                        element.classList.remove('now_scroll');
-                                    });
-                                    e.target.parentNode.classList.add('now_scroll')
-                                    document.getElementById(reed_day).scrollIntoView(true);
-                                })
-                                let nav_li = document.createElement('li');
-                                nav_li.className = "one_day_file_link"
-                                nav_li.appendChild(nav_a);
-                                history_nav.appendChild(nav_li);
+                                
                                 if(!target_color.length && !search_text.length && min_time.value === '0' && max_time.value === '23'){
                                     console.log('nomal');
                                     for(let i=0; i<obj.length; i++){
@@ -326,10 +319,30 @@ const ReadFile = (array) => {
                                     }
                                     console.log(obj);
                                 }
-                                let histry_ul = document.querySelector('.histry_ul');
-                                histry_ul.appendChild(one_days_file);
-                                file_top.push(document.getElementById(reed_day).getBoundingClientRect().top - 80);
-                                file_bottom.push(document.getElementById(reed_day).getBoundingClientRect().bottom - 80);
+                                if(one_days_file.childNodes.length != 1){
+                                    let history_nav = document.querySelector('.history_nav');
+                                    let nav_a = document.createElement('a');
+                                    nav_a.innerText = reed_day;
+                                    console.log(reed_day);
+                                    nav_a.addEventListener('click', (e) => {
+                                        console.log(reed_day);
+                                        document.querySelectorAll('.now_scroll').forEach((element) => {
+                                            element.classList.remove('now_scroll');
+                                        });
+                                        e.target.parentNode.classList.add('now_scroll')
+                                        document.getElementById(reed_day).scrollIntoView(true);
+                                    })
+                                    let nav_li = document.createElement('li');
+                                    nav_li.className = "one_day_file_link"
+                                    nav_li.appendChild(nav_a);
+                                    history_nav.appendChild(nav_li);
+
+                                    let histry_ul = document.querySelector('.histry_ul');
+                                    histry_ul.appendChild(one_days_file);
+                                    file_top.push(document.getElementById(reed_day).getBoundingClientRect().top - 80);
+                                    file_bottom.push(document.getElementById(reed_day).getBoundingClientRect().bottom - 80);
+                                }
+                                
                             }
                             array.shift();
                             ReadFile(array);
@@ -416,6 +429,7 @@ const TextSet = () => {
     }
     console.log(search_text);
     CoalReadFile()
+    document.querySelector('.text_form').value = ""
 }
 
 
