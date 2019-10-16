@@ -37,6 +37,23 @@ header {
   padding-left: 20px;
 }
 
+.searched_display {
+  height: 70px;
+  width: 620px;
+  font-size: 20px;
+  line-height: 70px;
+}
+
+.searched_display .and {
+  font-size: 16px;
+  color: red;
+}
+
+.searched_display .or {
+  font-size: 16px;
+  color: blue;
+}
+
 .color_picker {
   height: 70px;
   z-index: 2;
@@ -44,18 +61,18 @@ header {
   display: -ms-flexbox;
   display: flex;
   overflow: hidden;
+  margin-left: 5px;
 }
 
 .color_picker .color_accordion {
   width: 0;
   right: 0;
-  -webkit-transition: 0.2s;
-  transition: 0.2s;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
 }
 
 .color_picker .color_accordion .color_list {
   width: 168px;
-  min-width: 168px;
   height: 75px;
   font-size: 0;
 }
@@ -91,6 +108,7 @@ header {
 .color_picker .open_switch {
   -webkit-transform: rotate(180deg);
           transform: rotate(180deg);
+  border-left: none;
 }
 
 .color_picker .color_display {
@@ -124,6 +142,14 @@ header {
   font-size: 20px;
 }
 
+.color_picker .color_display .reset_button:hover {
+  background-color: red;
+}
+
+.color_picker .color_display .reset_button:hover button {
+  color: red;
+}
+
 .search_form .text_form {
   padding: 5px 10px;
   border: 0;
@@ -132,14 +158,24 @@ header {
   color: #2b2b2b;
   border: solid 1px #ccc;
   width: 400px;
-  height: 28px;
+  height: 23px;
 }
 
 .search_form .text_form:checked {
   border: solid 1px #00d9ff;
 }
 
-.search_form .week_select {
+.search_form .form_under {
+  width: 422px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.search_form .form_under .week_select {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -149,12 +185,12 @@ header {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  padding: 0 5px;
-  width: 300px;
-  height: 30px;
+  padding: 0 10px;
+  width: 272px;
+  height: 35px;
 }
 
-.search_form .week_select .weeks {
+.search_form .form_under .week_select .weeks {
   background-color: #fff;
   border-radius: 50px;
   font-size: 15px;
@@ -163,21 +199,36 @@ header {
   height: 25px;
 }
 
-.search_form .week_select .weeks:hover {
+.search_form .form_under .week_select .weeks:hover {
   border: solid 1px #00d9ff;
 }
 
-.search_form .week_select .all_week {
+.search_form .form_under .week_select .all_week {
   width: 50px;
 }
 
-.search_form .week_select .select_week {
+.search_form .form_under .week_select .select_week {
   border: solid 1px #00d9ff;
   -webkit-box-shadow: 1px 1px 10px #00d9ff;
           box-shadow: 1px 1px 10px #00d9ff;
 }
 
-.time_select select {
+.search_form .form_under .time_select {
+  width: 140px;
+  height: 35px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.search_form .form_under .time_select p {
+  font-size: 14px;
+}
+
+.search_form .form_under .time_select p select {
   outline: none;
   text-indent: 0.01px;
   text-overflow: '';

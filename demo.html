@@ -11,6 +11,81 @@
     </head>
     <body>
         <header>
+            <p class="searched_display">曖昧な記憶からの以下略</p>
+            
+            <div class="search_form">
+                <input type="text" class="text_form" placeholder="タイトル、URL、時間(例:0~12)">
+                <div class="form_under">
+                    <div class="week_select">
+                        <button class="weeks all_week select_week" value="ALL">ALL</button>
+                        <button class="weeks" value="月">月</button>
+                        <button class="weeks" value="火">火</button>
+                        <button class="weeks" value="水">水</button>
+                        <button class="weeks" value="木">木</button>
+                        <button class="weeks" value="金">金</button>
+                        <button class="weeks" value="土">土</button>
+                        <button class="weeks" value="日">日</button>
+                    </div>
+                    <div class="time_select">
+                        <p>
+                            <select name="min_time" id="min_time">
+                                <option value="0">0</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                                <option value="11">11</option>
+                                <option value="12">12</option>
+                                <option value="13">13</option>
+                                <option value="14">14</option>
+                                <option value="15">15</option>
+                                <option value="16">16</option>
+                                <option value="17">17</option>
+                                <option value="18">18</option>
+                                <option value="19">19</option>
+                                <option value="20">20</option>
+                                <option value="21">21</option>
+                                <option value="22">22</option>
+                                <option value="23">23</option>
+                            </select>
+                            時 〜
+                            <select name="max_time" id="max_time">
+                                <option value="0">0</option>
+                                <option value="1">1</option>
+                                <option value="2">2</option>
+                                <option value="3">3</option>
+                                <option value="4">4</option>
+                                <option value="5">5</option>
+                                <option value="6">6</option>
+                                <option value="7">7</option>
+                                <option value="8">8</option>
+                                <option value="9">9</option>
+                                <option value="10">10</option>
+                                <option value="11">11</option>
+                                <option value="12">12</option>
+                                <option value="13">13</option>
+                                <option value="14">14</option>
+                                <option value="15">15</option>
+                                <option value="16">16</option>
+                                <option value="17">17</option>
+                                <option value="18">18</option>
+                                <option value="19">19</option>
+                                <option value="20">20</option>
+                                <option value="21">21</option>
+                                <option value="22">22</option>
+                                <option value="23" selected>23</option>
+                            </select>
+                            時
+                        </p>
+                    </div>
+                </div>
+            </div>
             <div class="color_picker">
                 <div class="color_display">
                     <div class="selected_color"></div>
@@ -21,76 +96,7 @@
                 </div>
                 <button class="ac_switch">〉</button>
             </div>
-            <div class="search_form">
-                <input type="text" class="text_form" placeholder="タイトル、URL、時間(例:0~12)">
-                <div class="week_select">
-                    <button class="weeks all_week select_week" value="ALL">ALL</button>
-                    <button class="weeks" value="月">月</button>
-                    <button class="weeks" value="火">火</button>
-                    <button class="weeks" value="水">水</button>
-                    <button class="weeks" value="木">木</button>
-                    <button class="weeks" value="金">金</button>
-                    <button class="weeks" value="土">土</button>
-                    <button class="weeks" value="日">日</button>
-                </div>
-            </div>
-
-            <div class="time_select">
-                <select name="min_time" id="min_time">
-                    <option value="0">0</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                    <option value="9">9</option>
-                    <option value="10">10</option>
-                    <option value="11">11</option>
-                    <option value="12">12</option>
-                    <option value="13">13</option>
-                    <option value="14">14</option>
-                    <option value="15">15</option>
-                    <option value="16">16</option>
-                    <option value="17">17</option>
-                    <option value="18">18</option>
-                    <option value="19">19</option>
-                    <option value="20">20</option>
-                    <option value="21">21</option>
-                    <option value="22">22</option>
-                    <option value="23">23</option>
-                </select>
-                時〜
-                <select name="max_time" id="max_time">
-                    <option value="0">0</option>
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
-                    <option value="6">6</option>
-                    <option value="7">7</option>
-                    <option value="8">8</option>
-                    <option value="9">9</option>
-                    <option value="10">10</option>
-                    <option value="11">11</option>
-                    <option value="12">12</option>
-                    <option value="13">13</option>
-                    <option value="14">14</option>
-                    <option value="15">15</option>
-                    <option value="16">16</option>
-                    <option value="17">17</option>
-                    <option value="18">18</option>
-                    <option value="19">19</option>
-                    <option value="20">20</option>
-                    <option value="21">21</option>
-                    <option value="22">22</option>
-                    <option value="23" selected>23</option>
-                </select>
-                時
-            </div>
+        
             
             
         </header>

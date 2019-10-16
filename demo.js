@@ -242,12 +242,50 @@ const ReadFile = (array) => {
                                         console.log("text_serch")
                                         search_text.forEach((text) => {
                                             let result = [];
-                                            for(let i=0; i<obj.length; i++){
-                                                if(obj[i].title.toLowerCase().match(text) || obj[i].url.toLowerCase().match(text)){
-                                                    result.push(obj[i]);
+                                            if(text.match(/^or( |　)/)){
+                                                const or = text.split(' ');
+                                                for(let i=0; i<obj.length; i++){
+                                                    let match_flag = false;
+                                                    for(let j=1; j<or.length; j++){
+                                                        if(or[j].match(/^t::/)){
+                                                            if(obj[i].title.toLowerCase().match(or[j].slice(3))){
+                                                                match_flag = true;
+                                                            }
+                                                        }
+                                                        else if(or[j].match(/^u::/)){
+                                                            if(obj[i].url.toLowerCase().match(or[j].slice(3))){
+                                                                match_flag = true;
+                                                            }
+                                                        }
+                                                        if(obj[i].title.toLowerCase().match(or[j]) || obj[i].url.toLowerCase().match(or[j])){
+                                                            match_flag = true;
+                                                        }
+                                                    }
+                                                    if(match_flag){
+                                                        result.push(obj[i]);
+                                                    }
                                                 }
+                                                obj = result;
+                                            }else{
+                                                for(let i=0; i<obj.length; i++){
+                                                    if(text.match(/^t::/)){
+                                                        if(obj[i].title.toLowerCase().match(text.slice(3))){
+                                                            result.push(obj[i]);
+                                                        }
+                                                    }
+                                                    else if(text.match(/^u::/)){
+                                                        if(obj[i].url.toLowerCase().match(text.slice(3))){
+                                                            result.push(obj[i]);
+                                                        }
+                                                    }
+                                                    else {
+                                                        if(obj[i].title.toLowerCase().match(text) || obj[i].url.toLowerCase().match(text)){
+                                                            result.push(obj[i]);
+                                                        }
+                                                    }
+                                                }
+                                                obj = result;
                                             }
-                                            obj = result;
                                         })
                                         
                                     }
@@ -422,14 +460,44 @@ const TextSet = () => {
             max_time.value = time[1]
             search_text.splice(i,1);
             i--;
-        }else{
-            console.log(search_text[i])
-            console.log("no match...")
+        }
+        else if(search_text[i] === "||" && search_text[i-1] && search_text[i+1]){
+            if(search_text[i-1].match(/^or( |　)/)){
+                search_text[i-1] = search_text[i-1] + " " + search_text[i+1];
+                console.log(search_text[i-1]);
+                search_text.splice(i+1,1);
+                search_text.splice(i,1);
+                i = i-2;
+            }else{
+                const or_text = "or " + search_text[i-1] + " " + search_text[i+i]
+                console.log(or_text);
+                search_text[i] = or_text;
+                search_text.splice(i+1,1);
+                search_text.splice(i-1,1);
+                i = i-2;
+            }
+            
         }
     }
     console.log(search_text);
     CoalReadFile()
     document.querySelector('.text_form').value = ""
+    const searched = document.querySelector('.searched_display');
+    const searched_text = search_text.map((text) => {
+        if(text.match(/^or( |　)/)){
+            const or_html = text.split(' ');
+            
+            or_html.splice(0,1);
+            console.log(or_html);
+            return or_html.join("<span class='or'> or </span>");
+        }else {
+            return text
+        }
+    })
+    console.log(searched_text)
+    const searched_string = searched_text.join("<span class='and'> and </span>");
+    searched.innerHTML = "検索：" + searched_string;
+
 }
 
 

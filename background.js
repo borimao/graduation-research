@@ -129,7 +129,7 @@ chrome.extension.onRequest.addListener(function(request, sender, sendResponse){
             
             webkitRequestFileSystem(TEMPORARY, 1024*1024, function(fileSystem){
                 fileSystem.root.getFile(filename, {'create':true}, function(fileEntry){
-                    /*
+                    /*　ファイル壊れた時用
                     fileEntry.remove(function() {
                         console.log('File removed.');
                     },);

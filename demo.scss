@@ -33,18 +33,32 @@ header{
     padding-top: 5px;
     padding-left: 20px;
 }
+.searched_display{
+    height: 70px;
+    width: 620px;
+    font-size: 20px;
+    line-height: 70px;
+    .and{
+        font-size: 16px;
+        color: red;
+    }
+    .or{
+        font-size: 16px;
+        color: blue;
+    }
+}
 .color_picker{
     height: 70px;
     z-index: 2;
     display: flex;
     overflow: hidden;
+    margin-left: 5px;
     .color_accordion{
         width: 0;
         right: 0;
-        transition: 0.2s;
+        transition: 0.4s;
         .color_list{
             width: 168px;
-            min-width: 168px;
             height: 75px;
             font-size: 0;
             .color_button{
@@ -70,10 +84,11 @@ header{
         background-color: $color3;
         border-left: #000 solid 2px;
         color: #fff;
-        font-size: 20px
+        font-size: 20px;
     }
     .open_switch{
-        transform: rotate(180deg)
+        transform: rotate(180deg);
+        border-left: none;
     }
     
     .color_display{
@@ -101,6 +116,12 @@ header{
                 height: calc(100% - 4px);
                 font-size: 20px;
             }
+            &:hover{
+                background-color: red;
+                button{
+                    color: red;
+                }
+            }
         }
     }
 }
@@ -113,50 +134,65 @@ header{
         color:$color3;
         border:solid 1px #ccc;
         width: 400px;
-        height: 28px;
+        height: 23px;
         &:checked{
             border:solid 1px $color1;
         }
     }
-    .week_select{
+    .form_under{
+        width: 422px;
         display: flex;
         justify-content: space-between;
-        align-items: center;
-        padding: 0 5px;
-        width: 300px;
-        height: 30px;
-        .weeks{
-            background-color: #fff;
-            border-radius: 50px;
-            font-size: 15px;
-            border: solid 1px rgb(201, 201, 201);
-            width: 25px;
-            height: 25px;
-            &:hover{
+        .week_select{
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 10px;
+            width: 272px;
+            height: 35px;
+            .weeks{
+                background-color: #fff;
+                border-radius: 50px;
+                font-size: 15px;
+                border: solid 1px rgb(201, 201, 201);
+                width: 25px;
+                height: 25px;
+                &:hover{
+                    border: solid 1px rgb(0, 217, 255);
+                }
+            }
+            .all_week{
+                width: 50px;
+            }
+            .select_week{
                 border: solid 1px rgb(0, 217, 255);
+                box-shadow: 1px 1px 10px rgb(0, 217, 255);
             }
         }
-        .all_week{
-            width: 50px;
-        }
-        .select_week{
-            border: solid 1px rgb(0, 217, 255);
-            box-shadow: 1px 1px 10px rgb(0, 217, 255);
+        .time_select{
+            width: 140px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            p{
+                font-size: 14px;
+                select{
+                    outline:none;
+                    text-indent: 0.01px;
+                    text-overflow: '';
+                    background: none transparent;
+                    vertical-align: middle;
+                    font-size: inherit;
+                    color: inherit;
+                }
+            }
+            
         }
     }
     
+    
 }
-.time_select{
-    select{
-        outline:none;
-        text-indent: 0.01px;
-        text-overflow: '';
-        background: none transparent;
-        vertical-align: middle;
-        font-size: inherit;
-        color: inherit;
-    }
-}
+
 
 
 .main{
