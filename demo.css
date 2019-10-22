@@ -39,6 +39,7 @@ header {
 
 .searched_display {
   height: 70px;
+  max-width: 620px;
   width: 620px;
   font-size: 20px;
   line-height: 70px;
@@ -185,7 +186,7 @@ header {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  padding: 0 10px;
+  padding: 0 10px 0 0;
   width: 272px;
   height: 35px;
 }
@@ -329,23 +330,24 @@ header {
 }
 
 .main .histrylink .link .link_action {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
   position: absolute;
   top: 0;
   right: 0;
-  margin: 5px;
+}
+
+.main .histrylink .link .link_action button {
   width: 30px;
   height: 30px;
-  background-color: #000;
-  opacity: 0.6;
-}
-
-.main .histrylink .link .link_action .delete_button {
-  width: 100%;
-  height: 100%;
+  margin: 5px;
   color: #fff;
+  background-color: rgba(0, 0, 0, 0.6);
+  font-size: 20px;
 }
 
-.main .histrylink .link .link_action .delete_button:hover {
+.main .histrylink .link .link_action button:hover {
   color: red;
 }
 
@@ -406,5 +408,146 @@ header {
 
 .main nav .history_nav .now_scroll a {
   color: #fff;
+}
+
+.view_area {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  z-index: 3;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.view_area button {
+  background-color: #2b2b2b;
+  color: #fff;
+  height: 50px;
+  width: 50px;
+  position: absolute;
+  right: 10px;
+  top: 10px;
+}
+
+.view_area .view_ul {
+  width: 900px;
+  height: 100%;
+  overflow: scroll;
+  background-color: #fff;
+  -webkit-box-shadow: 1px 1px 5px #acacac;
+          box-shadow: 1px 1px 5px #acacac;
+}
+
+.view_area .browsing_day {
+  border-top: #000 solid 1px;
+  border-bottom: #000 solid 1px;
+  font-size: 20px;
+  padding-left: 20px;
+  height: 40px;
+  line-height: 40px;
+  background-color: #2b2b2b;
+  color: #fff;
+}
+
+.view_area .histrylink {
+  max-width: 100%;
+  margin: 0 auto;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  position: relative;
+}
+
+.view_area .histrylink .imgarea {
+  margin: 10px;
+  width: 256px;
+  height: 160px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background-color: #f0f0f0;
+}
+
+.view_area .histrylink .imgarea img {
+  width: 100%;
+}
+
+.view_area .histrylink .sitedate {
+  margin: 10px;
+  width: auto;
+  max-width: calc(100% - 296px);
+}
+
+.view_area .histrylink .sitedate .title {
+  font-size: 20px;
+}
+
+.view_area .histrylink .sitedate .url {
+  font-size: 12px;
+  width: 100%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  text-decoration: underline;
+}
+
+.view_area .histrylink .sitedate .time {
+  font-size: 18px;
+}
+
+.view_area .histrylink .link {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+}
+
+.view_area .histrylink .link .link_action {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.view_area .histrylink .link .link_action button {
+  width: 30px;
+  height: 30px;
+  margin: 5px;
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.6);
+  font-size: 20px;
+}
+
+.view_area .histrylink .link .link_action button:hover {
+  color: red;
+}
+
+.view_area .histrylink .link:hover {
+  opacity: 1;
+}
+
+.view_area .histrylink:hover {
+  background-color: #f0f0f0;
+}
+
+.view_area #now_view {
+  background-color: #b8f1ff;
+}
+
+.invisible {
+  display: none;
 }
 /*# sourceMappingURL=demo.css.map */

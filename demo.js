@@ -80,6 +80,10 @@ window.onload = ()=>{
             }
         }
     }
+
+    document.querySelector('.inv_flag').addEventListener('click', (e) => {
+        CloseView();
+    })
 }
 
 
@@ -179,6 +183,7 @@ const ReadFile = (array) => {
                                     for(let i=0; i<obj.length; i++){
                                         let histrylink = document.createElement('li');
                                         histrylink.className = 'histrylink'
+                                        histrylink.classList.add(filename + '_' + i);
                                         let imgarea = document.createElement('div');
                                         imgarea.className = 'imgarea';
                                         let img = document.createElement('img');
@@ -312,6 +317,7 @@ const ReadFile = (array) => {
 
                                         let histrylink = document.createElement('li');
                                         histrylink.className = 'histrylink'
+                                        histrylink.classList.add(filename + '_' + obj[i].id);
                                         let imgarea = document.createElement('div');
                                         imgarea.className = 'imgarea';
                                         let img = document.createElement('img');
@@ -346,6 +352,14 @@ const ReadFile = (array) => {
                                             e.preventDefault();
                                             DeleteLink(filename,obj[i].id);
                                         });
+                                        let viewbutton = document.createElement('button');
+                                        viewbutton.className = 'view_button';
+                                        viewbutton.innerHTML = '↕';
+                                        viewbutton.addEventListener('click', (e) => {
+                                            e.preventDefault();
+                                            ViewHistry(filename,obj[i].id);
+                                        });
+                                        linkaction.appendChild(viewbutton);
                                         linkaction.appendChild(deletebutton);
                                         link.appendChild(linkaction);
 
@@ -500,6 +514,133 @@ const TextSet = () => {
 
 }
 
+const CloseView = () => {
+    const view = document.querySelector('.view_area');
+    view.classList.add('invisible');
+    document.querySelector('.view_ul').innerHTML = null;
+}
+
+const ViewHistry = (filename, id) => {
+    const view = document.querySelector('.view_area');
+    view.classList.remove('invisible');
+
+    chrome.storage.local.get("test3", (value) => {
+        const file_length = value.test3.length
+        const num = value.test3.indexOf(filename);
+        let array;
+        if(file_length <= 2){
+            array = value.test3;
+        }else if(num === 0){
+            array = value.test3.slice(num,num+2)
+        }else if(num+1 === file_length){
+            array = value.test3.slice(num-1)
+        }else{
+            array = value.test3.slice(num-1,num+2)
+        }
+        console.log(array);
+        console.log(id,filename)
+
+        ReadFile2(array, id ,filename);
+    });
+}
+
+const ReadFile2 = (array, id, now_file) => {
+    console.log(array)
+    let filename = array[0]
+    if(filename){
+        webkitRequestFileSystem(TEMPORARY, 1024*1024, (fileSystem)=>{
+            if(!array.length){
+                
+            }else {
+                fileSystem.root.getFile(filename, {'create':false, exclusive: true}, (fileEntry) => {
+                    
+                    //ファイル読み込み
+                    fileEntry.file((file) => {
+                        const reader = new FileReader();
+                        reader.onloadend = function(e) {
+                            const json = this.result;
+                            let obj = JSON.parse(json);
+                            let date = filename.split(':');
+                            let reed_day = date[0] + '年' + date[1] + '月' + date[2] + '日（' + date[3] + '）';
+                            let one_days_file = document.createElement('div');
+                            one_days_file.className = 'one_days_file';
+                            one_days_file.id = reed_day;
+                            let browsing_day = document.createElement('li');
+                            browsing_day.className = 'browsing_day';
+                            browsing_day.id = reed_day
+                            browsing_day.innerText = reed_day;
+                            one_days_file.appendChild(browsing_day);
+
+                            for(let i=0; i<obj.length; i++){
+                                let histrylink = document.createElement('li');
+                                histrylink.className = 'histrylink'
+                                if(filename === now_file && i === id){
+                                    histrylink.id = 'now_view';
+                                }
+                                let imgarea = document.createElement('div');
+                                imgarea.className = 'imgarea';
+                                let img = document.createElement('img');
+                                img.setAttribute('src', obj[i].image);
+                                imgarea.appendChild(img);
+                                
+                                let sitedate = document.createElement('div');
+                                sitedate.className = 'sitedate';
+                                let title = document.createElement('p');
+                                title.className = 'title';
+                                title.innerText = obj[i].title;
+                                let url = document.createElement('p');
+                                url.className = 'url';
+                                url.setAttribute('href', obj[i].url);
+                                url.innerText = obj[i].url;
+                                let time = document.createElement('p');
+                                time.className = 'time';
+                                time.innerText = obj[i].year+"年"+obj[i].month+"月"+obj[i].day+"日 "+obj[i].hour+":"+obj[i].minute+":"+obj[i].second;
+                                sitedate.appendChild(title);
+                                sitedate.appendChild(url);
+                                sitedate.appendChild(time);
+                            
+                                let link = document.createElement('a');
+                                link.className = 'link';
+                                link.setAttribute('href', obj[i].url);
+                                let linkaction = document.createElement('div');
+                                linkaction.className = 'link_action';
+                                let deletebutton = document.createElement('button');
+                                deletebutton.className = 'delete_button';
+                                deletebutton.innerHTML = 'X';
+                                deletebutton.addEventListener('click', (e) => {
+                                    e.preventDefault();
+                                    DeleteLink(filename,i)
+                                });
+                                linkaction.appendChild(deletebutton);
+                                link.appendChild(linkaction);
+
+                                histrylink.appendChild(imgarea);
+                                histrylink.appendChild(sitedate);
+                                histrylink.appendChild(link);
+
+                                one_days_file.appendChild(histrylink);
+                            }
+                            console.log(obj);
+
+                            let view_ul = document.querySelector('.view_ul');
+                            view_ul.appendChild(one_days_file);
+                        
+                                
+                            array.shift();
+                            ReadFile2(array, id, now_file);
+                        };
+                        reader.readAsText(file);
+                    },);
+                },);
+            }
+        });
+    } else {
+        document.getElementById('now_view').scrollIntoView({
+            block: "center"
+        });
+        console.log('finished'); 
+    }
+}
 
 
 
