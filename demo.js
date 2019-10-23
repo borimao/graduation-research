@@ -18,6 +18,23 @@ let file_top = [];
 let file_bottom = [];
 let file_links = [];
 window.onload = ()=>{
+    let urlParams = location.search.substring(1);
+    console.log(urlParams);
+    if(urlParams) {
+        const param = urlParams.split('&');
+        let paramArray = [];
+        for (i = 0; i < param.length; i++) {
+          let paramItem = param[i].split('=');
+          paramArray[paramItem[0]] = paramItem[1];
+        }
+        if(paramArray.text){
+            console.log(decodeURI(paramArray.text));
+            search_text = decodeURI(paramArray.text).split(" ");
+            console.log(search_text);
+            SearchTextSet(search_text);
+        }
+      }
+
     let color_buttons = "";
     for(let x=0; x<5; x++){
         for(let y=0; y<12; y++){
@@ -75,6 +92,10 @@ window.onload = ()=>{
                 for(let j=0; j<file_links.length; j++){
                     if(j != i){
                         file_links[j].classList.remove('now_scroll');
+                        document.querySelector('.now_scroll').scrollIntoView({
+                            behavior: "smooth",
+                            block: "center"
+                        });
                     }
                 }
             }
@@ -247,8 +268,10 @@ const ReadFile = (array) => {
                                         console.log("text_serch")
                                         search_text.forEach((text) => {
                                             let result = [];
-                                            if(text.match(/^or( |　)/)){
-                                                const or = text.split(' ');
+                                            if(text.match(/^or/)){
+                                                console.log('orororororororoorororo')
+                                                const or = text.split('||');
+                                                console.log(or);
                                                 for(let i=0; i<obj.length; i++){
                                                     let match_flag = false;
                                                     for(let j=1; j<or.length; j++){
@@ -476,30 +499,36 @@ const TextSet = () => {
             i--;
         }
         else if(search_text[i] === "||" && search_text[i-1] && search_text[i+1]){
-            if(search_text[i-1].match(/^or( |　)/)){
-                search_text[i-1] = search_text[i-1] + " " + search_text[i+1];
+            if(search_text[i-1].match(/^or/)){
+                search_text[i-1] = search_text[i-1] + "||" + search_text[i+1];
                 console.log(search_text[i-1]);
                 search_text.splice(i+1,1);
                 search_text.splice(i,1);
                 i = i-2;
             }else{
-                const or_text = "or " + search_text[i-1] + " " + search_text[i+i]
+                const or_text = "or||" + search_text[i-1] + "||" + search_text[i+i]
                 console.log(or_text);
                 search_text[i] = or_text;
                 search_text.splice(i+1,1);
                 search_text.splice(i-1,1);
+                console.log(search_text);
                 i = i-2;
             }
             
         }
     }
     console.log(search_text);
-    CoalReadFile()
+    CoalReadFile();
+    SearchTextSet(search_text);
+    
+}
+
+const SearchTextSet = (search_text) => {
     document.querySelector('.text_form').value = ""
     const searched = document.querySelector('.searched_display');
     const searched_text = search_text.map((text) => {
-        if(text.match(/^or( |　)/)){
-            const or_html = text.split(' ');
+        if(text.match(/^or/)){
+            const or_html = text.split('||');
             
             or_html.splice(0,1);
             console.log(or_html);
@@ -511,7 +540,6 @@ const TextSet = () => {
     console.log(searched_text)
     const searched_string = searched_text.join("<span class='and'> and </span>");
     searched.innerHTML = "検索：" + searched_string;
-
 }
 
 const CloseView = () => {
