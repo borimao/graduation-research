@@ -93,7 +93,7 @@ chrome.extension.onRequest.addListener(function(request, sender, sendResponse){
                 '#9999ff', '#4d4dff', '#0000ff', '#0000b3', '#000066', //blue 
                 '#cc99ff', '#a64dff', '#8000ff', '#5900b3', '#330066', //purple
                 '#ff99ff', '#ff4dff', '#ff00ff', '#b300b3', '#660066', //pinnku
-                '#ff99cc', '#ffad46', '#ff0080', '#b30059', '#660033', //redpurple
+                '#ff99cc', '#ff4da6', '#ff0080', '#b30059', '#660033', //redpurple
                 '#000', '#fff'
             ];
             const colorClassifier = new ColorClassifier(palette);

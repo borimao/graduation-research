@@ -12,8 +12,12 @@ const palette = [
     ['#ff99ff', '#ff4dff', '#ff00ff', '#b300b3', '#660066'], //pinnku
     ['#ff99cc', '#ff4da6', '#ff0080', '#b30059', '#660033'] //redpurple
 ];
-let target_color = [];
-let search_text = [];
+let target_color = [];   
+let selected_color = [];   //現在選択されている色の座標
+let search_text = [];      //現在の検索テキスト
+let selected_week = "ALL"  //現在選択されている曜日
+let min_time = "0";
+let max_time = "23";
 let file_top = [];
 let file_bottom = [];
 let file_links = [];
@@ -29,11 +33,94 @@ window.onload = ()=>{
         }
         if(paramArray.text){
             console.log(decodeURI(paramArray.text));
-            search_text = decodeURI(paramArray.text).split(" ");
+            const text = decodeURI(paramArray.text);
+            document.querySelector('.text_form').value = text;
+            search_text = text.split(/ |　/);
+            console.log(search_text);
+            for(let i=0; i<search_text.length; i++){
+                console.log(search_text[i])
+                if(search_text[i].match(/^([0-9]|[1-2][0-9])~([0-9]|[1-2][0-9])$/)){
+                    console.log(search_text[i])
+                    console.log("best match!!!")
+                    const time = search_text[i].split('~');
+                    const min_value = document.querySelector('#min_time');
+                    const max_value = document.querySelector('#max_time');
+                    if(Number(time[0]) > 23){
+                        time[0] = "23";
+                    }
+                    if(Number(time[1]) > 23){
+                        time[1] = "23";
+                    }
+                    min_value.value = time[0];
+                    max_value.value = time[1];
+                    min_time = time[0];
+                    max_time = time[1];
+                    search_text.splice(i,1);
+                    i--;
+                }
+                else if(search_text[i] === "||" && search_text[i-1] && search_text[i+1]){
+                    if(search_text[i-1].match(/^or/)){
+                        search_text[i-1] = search_text[i-1] + "||" + search_text[i+1];
+                        console.log(search_text[i-1]);
+                        search_text.splice(i+1,1);
+                        search_text.splice(i,1);
+                        i = i-2;
+                    }else{
+                        const or_text = "or||" + search_text[i-1] + "||" + search_text[i+1]
+                        console.log(or_text);
+                        search_text[i] = or_text;
+                        search_text.splice(i+1,1);
+                        search_text.splice(i-1,1);
+                        console.log(search_text);
+                        i = i-2;
+                    }
+                    
+                }
+            }
             console.log(search_text);
             SearchTextSet(search_text);
         }
-      }
+        if(paramArray.color){
+            console.log(decodeURI(paramArray.color));
+            const param_color = decodeURI(paramArray.color).split(" ");
+            const x = Number(param_color[0]);
+            const y = Number(param_color[1]);
+            selected_color = [param_color[0],param_color[1]];
+            console.log(selected_color);
+            document.querySelector('.selected_color').style.backgroundColor = palette[y][x];
+            if(y===0){
+                target_color = [
+                    palette[11][x-1],palette[11][x],palette[11][x+1],
+                    palette[y][x-1],palette[y][x],palette[y][x+1],
+                    palette[y+1][x-1],palette[y+1][x],palette[y+1][x+1]
+                ];
+            }else if(y===11){
+                target_color = [
+                    palette[y-1][x-1],palette[y-1][x],palette[y-1][x+1],
+                    palette[y][x-1],palette[y][x],palette[y][x+1],
+                    palette[0][x-1],palette[0][x],palette[0][x+1]
+                ];
+            }else{
+                target_color = [
+                    palette[y-1][x-1],palette[y-1][x],palette[y-1][x+1],
+                    palette[y][x-1],palette[y][x],palette[y][x+1],
+                    palette[y+1][x-1],palette[y+1][x],palette[y+1][x+1]
+                ];
+            }
+        }
+        if(paramArray.week){
+            selected_week = decodeURI(paramArray.week);
+            document.querySelector('.select_week').classList.remove('select_week');
+            document.getElementById(selected_week).classList.add('select_week');
+        }
+        if(paramArray.time){
+            const param_time = decodeURI(paramArray.time).split(" ");
+            min_time = param_time[0];
+            max_time = param_time[1];
+            document.querySelector('#min_time').value = param_time[0];
+            document.querySelector('#max_time').value = param_time[1];
+        }
+    }
 
     let color_buttons = "";
     for(let x=0; x<5; x++){
@@ -47,7 +134,10 @@ window.onload = ()=>{
         for(let y=0; y<12; y++){
             let id = "color" + x + "-" + y;
             document.querySelector('#' + id).addEventListener('click',()=>{
-                ColorSelect(x,y,id);
+                console.log(x,y)
+                selected_color = [x,y];
+                console.log(selected_color);
+                ColorSelect(x,y);
             });
         }
     }
@@ -57,11 +147,15 @@ window.onload = ()=>{
     document.querySelector('.text_form').addEventListener('change', ()=>{
         TextSet();
     })
-    document.querySelector('#min_time').addEventListener('change', () => {
-        CoalReadFile()
+    document.querySelector('#min_time').addEventListener('change', (e) => {
+        min_time = e.target.value;
+        PageReload();
+        //CoalReadFile();
     });
-    document.querySelector('#max_time').addEventListener('change', () => {
-        CoalReadFile()
+    document.querySelector('#max_time').addEventListener('change', (e) => {
+        max_time = e.target.value;
+        PageReload();
+        //CoalReadFile();
     })
 
     document.querySelector('.delete_button').addEventListener('click', (e) => {
@@ -69,22 +163,25 @@ window.onload = ()=>{
        console.log("fdfs");
     });
 
+    /* ColorPickerの表示切り替えアクション
     document.querySelector('.ac_switch').addEventListener('click', (e) => {
         document.querySelector('.color_accordion').classList.toggle('open_accordion');
         e.target.classList.toggle('open_switch');
     })
+    */
 
     const weeks = document.querySelectorAll('.weeks');
     weeks.forEach((element) => {
         element.addEventListener('click', (e) => {
             document.querySelector('.select_week').classList.remove('select_week');
             e.target.classList.add('select_week');
-            console.log(e.target.value)
-            CoalReadFile();
+            selected_week = e.target.value
+            console.log(e.target.value);
+            PageReload();
+            //CoalReadFile();
         })
     })
-    CoalReadFile();
-
+    
     document.querySelector('.histry_ul').onscroll = function() {
         for(let i=0; i<file_links.length; i++){
             if(file_top[i] <= this.scrollTop && this.scrollTop < file_bottom[i]){
@@ -105,6 +202,8 @@ window.onload = ()=>{
     document.querySelector('.inv_flag').addEventListener('click', (e) => {
         CloseView();
     })
+
+    CoalReadFile();
 }
 
 
@@ -116,7 +215,7 @@ const ColorCheck = (arr1,colors) => {
     return [...arr1, ...arr2].filter(item => arr1.includes(item) && arr2.includes(item)).length > 0
 }
 
-const ColorSelect = (x,y,id) => {
+const ColorSelect = (x,y) => {
     console.log(palette[y][x]);
     console.log(y,x);
 
@@ -142,13 +241,16 @@ const ColorSelect = (x,y,id) => {
         ];
     }
     console.log(target_color.length);
-    CoalReadFile();
+    PageReload();
+    //CoalReadFile();
 }
 
 const ColorReset = () => {
     target_color = [];
+    selected_color = [];
     document.querySelector('.selected_color').style.backgroundColor = '#fff';
-    CoalReadFile();
+    PageReload();
+    //CoalReadFile();
 }
 
 
@@ -191,15 +293,12 @@ const ReadFile = (array) => {
                             browsing_day.innerText = reed_day;
                             one_days_file.appendChild(browsing_day);
 
-                            const min_time = document.querySelector('#min_time');
-                            const max_time = document.querySelector('#max_time');
-                            const select_week = document.querySelector('.select_week').value;
-                            console.log(select_week);
-                            if(select_week === 'ALL' || select_week === date[3]){
-                                console.log(select_week);
+                            console.log(selected_week);
+                            if(selected_week === 'ALL' || selected_week === date[3]){
+                                console.log(selected_week);
                                 console.log(search_text)
                                 
-                                if(!target_color.length && !search_text.length && min_time.value === '0' && max_time.value === '23'){
+                                if(!target_color.length && !search_text.length && min_time === '0' && max_time === '23'){
                                     console.log('nomal');
                                     for(let i=0; i<obj.length; i++){
                                         let histrylink = document.createElement('li');
@@ -269,7 +368,6 @@ const ReadFile = (array) => {
                                         search_text.forEach((text) => {
                                             let result = [];
                                             if(text.match(/^or/)){
-                                                console.log('orororororororoorororo')
                                                 const or = text.split('||');
                                                 console.log(or);
                                                 for(let i=0; i<obj.length; i++){
@@ -317,10 +415,10 @@ const ReadFile = (array) => {
                                         })
                                         
                                     }
-                                    if(min_time.value !== '0' || !max_time.value !== '23'){
+                                    if(min_time !== '0' || !max_time !== '23'){
                                         let result = [];
-                                        const min_num = Number(min_time.value);
-                                        const max_num = Number(max_time.value);
+                                        const min_num = Number(min_time);
+                                        const max_num = Number(max_time);
                                         if(min_num > max_num){
                                             for(let i=0; i<obj.length; i++){
                                                 if(((min_num <= obj[i].hour) && (obj[i].hour <= 23)) || ((0 <= obj[i].hour) && (obj[i].hour <= max_num))){
@@ -460,7 +558,8 @@ const DeleteLink = (filename, id) => {
                                 fileWriter.write(data);
                             } else {
                                 console.log('Write completed.');
-                                CoalReadFile()
+                                PageReload();
+                                //CoalReadFile();
                             }
                         };
                         fileWriter.truncate(0);
@@ -475,56 +574,15 @@ const DeleteLink = (filename, id) => {
 }
 
 const TextSet = () => {
-    const text = document.querySelector('.text_form').value.toLowerCase()
-    console.log(text);
-    search_text = text.split(/ |　/);
-    console.log(search_text);
-    for(let i=0; i<search_text.length; i++){
-        console.log(search_text[i])
-        if(search_text[i].match(/^([0-9]|[1-2][0-9])~([0-9]|[1-2][0-9])$/)){
-            console.log(search_text[i])
-            console.log("best match!!!")
-            const time = search_text[i].split('~');
-            const min_time = document.querySelector('#min_time');
-            const max_time = document.querySelector('#max_time');
-            if(Number(time[0]) > 23){
-                time[0] = "23";
-            }
-            if(Number(time[1]) > 23){
-                time[1] = "23";
-            }
-            min_time.value = time[0];
-            max_time.value = time[1]
-            search_text.splice(i,1);
-            i--;
-        }
-        else if(search_text[i] === "||" && search_text[i-1] && search_text[i+1]){
-            if(search_text[i-1].match(/^or/)){
-                search_text[i-1] = search_text[i-1] + "||" + search_text[i+1];
-                console.log(search_text[i-1]);
-                search_text.splice(i+1,1);
-                search_text.splice(i,1);
-                i = i-2;
-            }else{
-                const or_text = "or||" + search_text[i-1] + "||" + search_text[i+i]
-                console.log(or_text);
-                search_text[i] = or_text;
-                search_text.splice(i+1,1);
-                search_text.splice(i-1,1);
-                console.log(search_text);
-                i = i-2;
-            }
-            
-        }
-    }
-    console.log(search_text);
+    search_text = document.querySelector('.text_form').value.toLowerCase()
+    PageReload();
+    /* 
     CoalReadFile();
     SearchTextSet(search_text);
-    
+    */
 }
 
 const SearchTextSet = (search_text) => {
-    document.querySelector('.text_form').value = ""
     const searched = document.querySelector('.searched_display');
     const searched_text = search_text.map((text) => {
         if(text.match(/^or/)){
@@ -670,8 +728,32 @@ const ReadFile2 = (array, id, now_file) => {
     }
 }
 
+const PageReload = () => {
+    let link = '/demo.html'
 
-
+    if(!search_text[0] && !selected_color[0] && selected_week === "ALL" && min_time === "0" && max_time === "23"){
+        location.href = link;
+    }else {
+        link += '?';
+        if(search_text[0]){
+            let text_link = '&text=' + search_text;
+            link += text_link;
+        }
+        if(selected_color[0]){
+            let color_link = '&color=' + selected_color[0] + ' ' + selected_color[1];
+            link += color_link;
+        }
+        if(selected_week != "ALL"){
+            let week_link = '&week=' + selected_week;
+            link += week_link;
+        }
+        if(min_time != "0" || max_time != "23"){
+            let time_link = '&time=' + min_time + ' ' + max_time;
+            link += time_link;
+        }
+        location.href = link;
+    }
+}
 
 
 

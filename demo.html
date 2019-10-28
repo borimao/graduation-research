@@ -11,20 +11,28 @@
     </head>
     <body>
         <header>
-            <p class="searched_display">曖昧な記憶からの以下略</p>
-            
+            <div class="color_picker">
+                <div class="color_display">
+                    <div class="selected_color"></div>
+                    <div class="reset_button"><button class="color_reset">✗</button></div>
+                </div>
+                <div class="color_accordion">
+                    <div class="color_list"></div>
+                </div>
+                <!--<button class="ac_switch">〉</button>-->
+            </div>
             <div class="search_form">
                 <input type="text" class="text_form" placeholder="タイトル、URL、時間(例:0~12)">
                 <div class="form_under">
                     <div class="week_select">
-                        <button class="weeks all_week select_week" value="ALL">ALL</button>
-                        <button class="weeks" value="月">月</button>
-                        <button class="weeks" value="火">火</button>
-                        <button class="weeks" value="水">水</button>
-                        <button class="weeks" value="木">木</button>
-                        <button class="weeks" value="金">金</button>
-                        <button class="weeks" value="土">土</button>
-                        <button class="weeks" value="日">日</button>
+                        <button id="ALL" class="weeks all_week select_week" value="ALL">ALL</button>
+                        <button id="月" class="weeks" value="月">月</button>
+                        <button id="火" class="weeks" value="火">火</button>
+                        <button id="水" class="weeks" value="水">水</button>
+                        <button id="木" class="weeks" value="木">木</button>
+                        <button id="金" class="weeks" value="金">金</button>
+                        <button id="土" class="weeks" value="土">土</button>
+                        <button id="日" class="weeks" value="日">日</button>
                     </div>
                     <div class="time_select">
                         <p>
@@ -86,19 +94,7 @@
                     </div>
                 </div>
             </div>
-            <div class="color_picker">
-                <div class="color_display">
-                    <div class="selected_color"></div>
-                    <div class="reset_button"><button class="color_reset">✗</button></div>
-                </div>
-                <div class="color_accordion">
-                    <div class="color_list"></div>
-                </div>
-                <button class="ac_switch">〉</button>
-            </div>
-        
-            
-            
+            <p class="searched_display">曖昧な記憶からの以下略</p>
         </header>
         <div class="main">
             <ul class="histry_ul">
