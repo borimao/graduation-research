@@ -27,7 +27,15 @@ chrome.extension.onRequest.addListener(function(request, sender, sendResponse){
     const filename = year + ":" + month + ":" + day + ":" + WeekStr;
     
     chrome.storage.local.get("test3", (value)=> {
+        /* ファイル名の記録消すよう
         console.log(value.test3)
+        console.log(value.test3.indexOf('2019:11:11:月'));
+        const obj = value.test3;
+        obj.splice(value.test3.indexOf('2019:11:11:月'),1);
+        console.log(obj);
+        chrome.storage.local.set({'test3':obj}, ()=>{
+        });
+        */
         if(value.test3 == undefined){
             console.log('uryyy')
             chrome.storage.local.set({'test3':[filename]}, ()=>{
@@ -60,8 +68,8 @@ chrome.extension.onRequest.addListener(function(request, sender, sendResponse){
         
         img.onload = () => {
             //リサイズ
-            let width = 320;
-            let height = 200;
+            let width = 160;
+            let height = 100;
             const ratio = img.width / img.height;
             const canvas = document.createElement('canvas');
             canvas.width = width;

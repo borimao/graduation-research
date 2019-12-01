@@ -228,8 +228,8 @@ header{
         position: relative;
         .imgarea{
             margin: 10px;
-            width: 256px;
-            height: 160px;
+            width: calc(192px * 0.7);
+            height: calc(120px * 0.7);
             display: flex;
             align-items: center;
             background-color: $color2;
@@ -300,7 +300,7 @@ header{
         .history_nav{
             li{
                 position: relative;
-                margin: 10px 10px 10px 10px;
+                margin: 10px 5px 10px 5px;
                 font-size: 16px;
                 text-align: center;
                 width: 180px;
@@ -379,8 +379,8 @@ header{
         position: relative;
         .imgarea{
             margin: 10px;
-            width: 256px;
-            height: 160px;
+            width: 192px;
+            height: 120px; 
             display: flex;
             align-items: center;
             background-color: $color2;

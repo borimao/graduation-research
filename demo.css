@@ -284,8 +284,8 @@ header {
 
 .main .histrylink .imgarea {
   margin: 10px;
-  width: 256px;
-  height: 160px;
+  width: calc(192px * 0.7);
+  height: calc(120px * 0.7);
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -374,7 +374,7 @@ header {
 
 .main nav .history_nav li {
   position: relative;
-  margin: 10px 10px 10px 10px;
+  margin: 10px 5px 10px 5px;
   font-size: 16px;
   text-align: center;
   width: 180px;
@@ -468,8 +468,8 @@ header {
 
 .view_area .histrylink .imgarea {
   margin: 10px;
-  width: 256px;
-  height: 160px;
+  width: 192px;
+  height: 120px;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;

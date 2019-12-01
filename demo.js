@@ -18,6 +18,7 @@ let search_text = [];      //現在の検索テキスト
 let selected_week = "ALL"  //現在選択されている曜日
 let min_time = "0";
 let max_time = "23";
+let now_scroll = 0;
 let file_top = [];
 let file_bottom = [];
 let file_links = [];
@@ -35,6 +36,8 @@ window.onload = ()=>{
             console.log(decodeURI(paramArray.text));
             const text = decodeURI(paramArray.text);
             document.querySelector('.text_form').value = text;
+            search_text = text;
+            let set_text = [];
             search_text = text.split(/ |　/);
             console.log(search_text);
             for(let i=0; i<search_text.length; i++){
@@ -55,6 +58,8 @@ window.onload = ()=>{
                     max_value.value = time[1];
                     min_time = time[0];
                     max_time = time[1];
+                    document.querySelector('#min_time').value = min_time;
+                    document.querySelector('#max_time').value = max_time;
                     search_text.splice(i,1);
                     i--;
                 }
@@ -115,10 +120,13 @@ window.onload = ()=>{
         }
         if(paramArray.time){
             const param_time = decodeURI(paramArray.time).split(" ");
-            min_time = param_time[0];
-            max_time = param_time[1];
-            document.querySelector('#min_time').value = param_time[0];
-            document.querySelector('#max_time').value = param_time[1];
+            if(max_time == "23" && min_time == "0"){
+                min_time = param_time[0];
+                max_time = param_time[1];
+                document.querySelector('#min_time').value = min_time;
+                document.querySelector('#max_time').value = max_time;
+            }
+            
         }
     }
 
@@ -183,6 +191,7 @@ window.onload = ()=>{
     })
     
     document.querySelector('.histry_ul').onscroll = function() {
+        now_scroll = this.scrollTop;
         for(let i=0; i<file_links.length; i++){
             if(file_top[i] <= this.scrollTop && this.scrollTop < file_bottom[i]){
                 file_links[i].classList.add('now_scroll');
@@ -280,243 +289,259 @@ const ReadFile = (array) => {
                     fileEntry.file((file) => {
                         const reader = new FileReader();
                         reader.onloadend = function(e) {
-                            const json = this.result;
-                            let obj = JSON.parse(json);
-                            let date = filename.split(':');
-                            let reed_day = date[0] + '年' + date[1] + '月' + date[2] + '日（' + date[3] + '）';
-                            let one_days_file = document.createElement('div');
-                            one_days_file.className = 'one_days_file';
-                            one_days_file.id = reed_day;
-                            let browsing_day = document.createElement('li');
-                            browsing_day.className = 'browsing_day';
-                            browsing_day.id = reed_day
-                            browsing_day.innerText = reed_day;
-                            one_days_file.appendChild(browsing_day);
-
-                            console.log(selected_week);
-                            if(selected_week === 'ALL' || selected_week === date[3]){
-                                console.log(selected_week);
-                                console.log(search_text)
-                                
-                                if(!target_color.length && !search_text.length && min_time === '0' && max_time === '23'){
-                                    console.log('nomal');
-                                    for(let i=0; i<obj.length; i++){
-                                        let histrylink = document.createElement('li');
-                                        histrylink.className = 'histrylink'
-                                        histrylink.classList.add(filename + '_' + i);
-                                        let imgarea = document.createElement('div');
-                                        imgarea.className = 'imgarea';
-                                        let img = document.createElement('img');
-                                        img.setAttribute('src', obj[i].image);
-                                        imgarea.appendChild(img);
-                                        
-                                        let sitedate = document.createElement('div');
-                                        sitedate.className = 'sitedate';
-                                        let title = document.createElement('p');
-                                        title.className = 'title';
-                                        title.innerText = obj[i].title;
-                                        let url = document.createElement('p');
-                                        url.className = 'url';
-                                        url.setAttribute('href', obj[i].url);
-                                        url.innerText = obj[i].url;
-                                        let time = document.createElement('p');
-                                        time.className = 'time';
-                                        time.innerText = obj[i].year+"年"+obj[i].month+"月"+obj[i].day+"日 "+obj[i].hour+":"+obj[i].minute+":"+obj[i].second;
-                                        sitedate.appendChild(title);
-                                        sitedate.appendChild(url);
-                                        sitedate.appendChild(time);
-                                    
-                                        let link = document.createElement('a');
-                                        link.className = 'link';
-                                        link.setAttribute('href', obj[i].url);
-                                        let linkaction = document.createElement('div');
-                                        linkaction.className = 'link_action';
-                                        let deletebutton = document.createElement('button');
-                                        deletebutton.className = 'delete_button';
-                                        deletebutton.innerHTML = 'X';
-                                        deletebutton.addEventListener('click', (e) => {
-                                            e.preventDefault();
-                                            DeleteLink(filename,i)
+                            (() => {
+                                try {
+                                    JSON.parse(this.result);
+                                } catch (e) {　//だめな時
+                                    chrome.storage.local.get("test3", (value) => {
+                                        const obj = value.test3;
+                                        obj.splice(value.test3.indexOf(filename),1);
+                                        chrome.storage.local.set({'test3':obj}, ()=>{
                                         });
-                                        linkaction.appendChild(deletebutton);
-                                        link.appendChild(linkaction);
+                                    });
+                                    alert(filename + "の履歴は問題が発生したため削除されました。申し訳ありません。")
+                                    return false;
+                                }
+                                const json = this.result;
+                                console.log(json);
+                                let obj = JSON.parse(json);
+                                let date = filename.split(':');
+                                let reed_day = date[0] + '年' + date[1] + '月' + date[2] + '日（' + date[3] + '）';
+                                let one_days_file = document.createElement('div');
+                                one_days_file.className = 'one_days_file';
+                                one_days_file.id = reed_day;
+                                let browsing_day = document.createElement('li');
+                                browsing_day.className = 'browsing_day';
+                                browsing_day.id = reed_day
+                                browsing_day.innerText = reed_day;
+                                one_days_file.appendChild(browsing_day);
 
-                                        histrylink.appendChild(imgarea);
-                                        histrylink.appendChild(sitedate);
-                                        histrylink.appendChild(link);
-
-                                        one_days_file.appendChild(histrylink);
-                                    }
-                                    console.log(obj);
-                                }else{
-                                    console.log('serch')
-                                    for(let i=0; i<obj.length; i++){
-                                        obj[i].id = i
-                                    }
-                                    if(target_color.length){
-                                        let result = [];
+                                console.log(selected_week);
+                                if(selected_week === 'ALL' || selected_week === date[3]){
+                                    console.log(selected_week);
+                                    console.log(search_text)
+                                    
+                                    if(!target_color.length && !search_text.length && min_time === '0' && max_time === '23'){
+                                        console.log('nomal');
                                         for(let i=0; i<obj.length; i++){
-                                            if(ColorCheck(target_color,obj[i].colors)){
-                                                console.log(obj[i])
-                                                result.push(obj[i]);
-                                            }
-                                        }
-                                        obj = result;
-                                    }
-                                    if(search_text.length){
-                                        console.log("text_serch")
-                                        search_text.forEach((text) => {
-                                            let result = [];
-                                            if(text.match(/^or/)){
-                                                const or = text.split('||');
-                                                console.log(or);
-                                                for(let i=0; i<obj.length; i++){
-                                                    let match_flag = false;
-                                                    for(let j=1; j<or.length; j++){
-                                                        if(or[j].match(/^t::/)){
-                                                            if(obj[i].title.toLowerCase().match(or[j].slice(3))){
-                                                                match_flag = true;
-                                                            }
-                                                        }
-                                                        else if(or[j].match(/^u::/)){
-                                                            if(obj[i].url.toLowerCase().match(or[j].slice(3))){
-                                                                match_flag = true;
-                                                            }
-                                                        }
-                                                        if(obj[i].title.toLowerCase().match(or[j]) || obj[i].url.toLowerCase().match(or[j])){
-                                                            match_flag = true;
-                                                        }
-                                                    }
-                                                    if(match_flag){
-                                                        result.push(obj[i]);
-                                                    }
-                                                }
-                                                obj = result;
-                                            }else{
-                                                for(let i=0; i<obj.length; i++){
-                                                    if(text.match(/^t::/)){
-                                                        if(obj[i].title.toLowerCase().match(text.slice(3))){
-                                                            result.push(obj[i]);
-                                                        }
-                                                    }
-                                                    else if(text.match(/^u::/)){
-                                                        if(obj[i].url.toLowerCase().match(text.slice(3))){
-                                                            result.push(obj[i]);
-                                                        }
-                                                    }
-                                                    else {
-                                                        if(obj[i].title.toLowerCase().match(text) || obj[i].url.toLowerCase().match(text)){
-                                                            result.push(obj[i]);
-                                                        }
-                                                    }
-                                                }
-                                                obj = result;
-                                            }
-                                        })
+                                            let histrylink = document.createElement('li');
+                                            histrylink.className = 'histrylink'
+                                            histrylink.classList.add(filename + '_' + i);
+                                            let imgarea = document.createElement('div');
+                                            imgarea.className = 'imgarea';
+                                            let img = document.createElement('img');
+                                            img.setAttribute('src', obj[i].image);
+                                            imgarea.appendChild(img);
+                                            
+                                            let sitedate = document.createElement('div');
+                                            sitedate.className = 'sitedate';
+                                            let title = document.createElement('p');
+                                            title.className = 'title';
+                                            title.innerText = obj[i].title;
+                                            let url = document.createElement('p');
+                                            url.className = 'url';
+                                            url.setAttribute('href', obj[i].url);
+                                            url.innerText = obj[i].url;
+                                            let time = document.createElement('p');
+                                            time.className = 'time';
+                                            time.innerText = obj[i].year+"年"+obj[i].month+"月"+obj[i].day+"日 "+obj[i].hour+":"+obj[i].minute+":"+obj[i].second;
+                                            sitedate.appendChild(title);
+                                            sitedate.appendChild(url);
+                                            sitedate.appendChild(time);
                                         
-                                    }
-                                    if(min_time !== '0' || !max_time !== '23'){
-                                        let result = [];
-                                        const min_num = Number(min_time);
-                                        const max_num = Number(max_time);
-                                        if(min_num > max_num){
+                                            let link = document.createElement('a');
+                                            link.className = 'link';
+                                            link.setAttribute('href', obj[i].url);
+                                            let linkaction = document.createElement('div');
+                                            linkaction.className = 'link_action';
+                                            let deletebutton = document.createElement('button');
+                                            deletebutton.className = 'delete_button';
+                                            deletebutton.innerHTML = 'X';
+                                            deletebutton.addEventListener('click', (e) => {
+                                                e.preventDefault();
+                                                DeleteLink(filename,i)
+                                            });
+                                            linkaction.appendChild(deletebutton);
+                                            link.appendChild(linkaction);
+
+                                            histrylink.appendChild(imgarea);
+                                            histrylink.appendChild(sitedate);
+                                            histrylink.appendChild(link);
+
+                                            one_days_file.appendChild(histrylink);
+                                        }
+                                        console.log(obj);
+                                    }else{
+                                        console.log('serch')
+                                        for(let i=0; i<obj.length; i++){
+                                            obj[i].id = i
+                                        }
+                                        if(target_color.length){
+                                            let result = [];
                                             for(let i=0; i<obj.length; i++){
-                                                if(((min_num <= obj[i].hour) && (obj[i].hour <= 23)) || ((0 <= obj[i].hour) && (obj[i].hour <= max_num))){
+                                                if(ColorCheck(target_color,obj[i].colors)){
+                                                    console.log(obj[i])
                                                     result.push(obj[i]);
                                                 }
                                             }
+                                            obj = result;
                                         }
-                                        for(let i=0; i<obj.length; i++){
-                                            if((min_num <= obj[i].hour) && (obj[i].hour <= max_num)){
-                                                result.push(obj[i]);
+                                        if(search_text.length){
+                                            console.log("text_serch")
+                                            search_text.forEach((text) => {
+                                                let result = [];
+                                                if(text.match(/^or/)){
+                                                    const or = text.split('||');
+                                                    console.log(or);
+                                                    for(let i=0; i<obj.length; i++){
+                                                        let match_flag = false;
+                                                        for(let j=1; j<or.length; j++){
+                                                            if(or[j].match(/^t::/)){
+                                                                if(obj[i].title.toLowerCase().match(or[j].slice(3))){
+                                                                    match_flag = true;
+                                                                }
+                                                            }
+                                                            else if(or[j].match(/^u::/)){
+                                                                if(obj[i].url.toLowerCase().match(or[j].slice(3))){
+                                                                    match_flag = true;
+                                                                }
+                                                            }
+                                                            if(obj[i].title.toLowerCase().match(or[j]) || obj[i].url.toLowerCase().match(or[j])){
+                                                                match_flag = true;
+                                                            }
+                                                        }
+                                                        if(match_flag){
+                                                            result.push(obj[i]);
+                                                        }
+                                                    }
+                                                    obj = result;
+                                                }else{
+                                                    for(let i=0; i<obj.length; i++){
+                                                        if(text.match(/^t::/)){
+                                                            if(obj[i].title.toLowerCase().match(text.slice(3))){
+                                                                result.push(obj[i]);
+                                                            }
+                                                        }
+                                                        else if(text.match(/^u::/)){
+                                                            if(obj[i].url.toLowerCase().match(text.slice(3))){
+                                                                result.push(obj[i]);
+                                                            }
+                                                        }
+                                                        else {
+                                                            if(obj[i].title.toLowerCase().match(text) || obj[i].url.toLowerCase().match(text)){
+                                                                result.push(obj[i]);
+                                                            }
+                                                        }
+                                                    }
+                                                    obj = result;
+                                                }
+                                            })
+                                            
+                                        }
+                                        if(min_time !== '0' || !max_time !== '23'){
+                                            let result = [];
+                                            const min_num = Number(min_time);
+                                            const max_num = Number(max_time);
+                                            if(min_num > max_num){
+                                                for(let i=0; i<obj.length; i++){
+                                                    if(((min_num <= obj[i].hour) && (obj[i].hour <= 23)) || ((0 <= obj[i].hour) && (obj[i].hour <= max_num))){
+                                                        result.push(obj[i]);
+                                                    }
+                                                }
                                             }
+                                            for(let i=0; i<obj.length; i++){
+                                                if((min_num <= obj[i].hour) && (obj[i].hour <= max_num)){
+                                                    result.push(obj[i]);
+                                                }
+                                            }
+                                            obj = result;
                                         }
-                                        obj = result;
-                                    }
 
-                                    for(let i=0; i<obj.length; i++){
+                                        for(let i=0; i<obj.length; i++){
 
-                                        let histrylink = document.createElement('li');
-                                        histrylink.className = 'histrylink'
-                                        histrylink.classList.add(filename + '_' + obj[i].id);
-                                        let imgarea = document.createElement('div');
-                                        imgarea.className = 'imgarea';
-                                        let img = document.createElement('img');
-                                        img.setAttribute('src', obj[i].image);
-                                        imgarea.appendChild(img);
+                                            let histrylink = document.createElement('li');
+                                            histrylink.className = 'histrylink'
+                                            histrylink.classList.add(filename + '_' + obj[i].id);
+                                            let imgarea = document.createElement('div');
+                                            imgarea.className = 'imgarea';
+                                            let img = document.createElement('img');
+                                            img.setAttribute('src', obj[i].image);
+                                            imgarea.appendChild(img);
+                                            
+                                            let sitedate = document.createElement('div');
+                                            sitedate.className = 'sitedate';
+                                            let title = document.createElement('p');
+                                            title.className = 'title';
+                                            title.innerText = obj[i].title;
+                                            let url = document.createElement('p');
+                                            url.className = 'url';
+                                            url.setAttribute('href', obj[i].url);
+                                            url.innerText = obj[i].url;
+                                            let time = document.createElement('p');
+                                            time.className = 'time';
+                                            time.innerText = obj[i].year+"年"+obj[i].month+"月"+obj[i].day+"日 "+obj[i].hour+":"+obj[i].minute+":"+obj[i].second;
+                                            sitedate.appendChild(title);
+                                            sitedate.appendChild(url);
+                                            sitedate.appendChild(time);
                                         
-                                        let sitedate = document.createElement('div');
-                                        sitedate.className = 'sitedate';
-                                        let title = document.createElement('p');
-                                        title.className = 'title';
-                                        title.innerText = obj[i].title;
-                                        let url = document.createElement('p');
-                                        url.className = 'url';
-                                        url.setAttribute('href', obj[i].url);
-                                        url.innerText = obj[i].url;
-                                        let time = document.createElement('p');
-                                        time.className = 'time';
-                                        time.innerText = obj[i].year+"年"+obj[i].month+"月"+obj[i].day+"日 "+obj[i].hour+":"+obj[i].minute+":"+obj[i].second;
-                                        sitedate.appendChild(title);
-                                        sitedate.appendChild(url);
-                                        sitedate.appendChild(time);
-                                    
-                                        let link = document.createElement('a');
-                                        link.className = 'link';
-                                        link.setAttribute('href', obj[i].url);
-                                        let linkaction = document.createElement('div');
-                                        linkaction.className = 'link_action';
-                                        let deletebutton = document.createElement('button');
-                                        deletebutton.className = 'delete_button';
-                                        deletebutton.innerHTML = 'X';
-                                        deletebutton.addEventListener('click', (e) => {
-                                            e.preventDefault();
-                                            DeleteLink(filename,obj[i].id);
-                                        });
-                                        let viewbutton = document.createElement('button');
-                                        viewbutton.className = 'view_button';
-                                        viewbutton.innerHTML = '↕';
-                                        viewbutton.addEventListener('click', (e) => {
-                                            e.preventDefault();
-                                            ViewHistry(filename,obj[i].id);
-                                        });
-                                        linkaction.appendChild(viewbutton);
-                                        linkaction.appendChild(deletebutton);
-                                        link.appendChild(linkaction);
+                                            let link = document.createElement('a');
+                                            link.className = 'link';
+                                            link.setAttribute('href', obj[i].url);
+                                            let linkaction = document.createElement('div');
+                                            linkaction.className = 'link_action';
+                                            let deletebutton = document.createElement('button');
+                                            deletebutton.className = 'delete_button';
+                                            deletebutton.innerHTML = 'X';
+                                            deletebutton.addEventListener('click', (e) => {
+                                                e.preventDefault();
+                                                DeleteLink(filename,obj[i].id);
+                                            });
+                                            let viewbutton = document.createElement('button');
+                                            viewbutton.className = 'view_button';
+                                            viewbutton.innerHTML = '↕';
+                                            viewbutton.addEventListener('click', (e) => {
+                                                e.preventDefault();
+                                                ViewHistry(filename,obj[i].id);
+                                            });
+                                            linkaction.appendChild(viewbutton);
+                                            linkaction.appendChild(deletebutton);
+                                            link.appendChild(linkaction);
 
-                                        histrylink.appendChild(imgarea);
-                                        histrylink.appendChild(sitedate);
-                                        histrylink.appendChild(link);
+                                            histrylink.appendChild(imgarea);
+                                            histrylink.appendChild(sitedate);
+                                            histrylink.appendChild(link);
 
-                                        one_days_file.appendChild(histrylink);
+                                            one_days_file.appendChild(histrylink);
+                                        }
+                                        console.log(obj);
                                     }
-                                    console.log(obj);
-                                }
-                                if(one_days_file.childNodes.length != 1){
-                                    let history_nav = document.querySelector('.history_nav');
-                                    let nav_a = document.createElement('a');
-                                    nav_a.innerText = reed_day;
-                                    console.log(reed_day);
-                                    nav_a.addEventListener('click', (e) => {
+                                    if(one_days_file.childNodes.length != 1){
+                                        let history_nav = document.querySelector('.history_nav');
+                                        let nav_a = document.createElement('a');
+                                        nav_a.innerText = reed_day;
                                         console.log(reed_day);
-                                        document.querySelectorAll('.now_scroll').forEach((element) => {
-                                            element.classList.remove('now_scroll');
-                                        });
-                                        e.target.parentNode.classList.add('now_scroll')
-                                        document.getElementById(reed_day).scrollIntoView(true);
-                                    })
-                                    let nav_li = document.createElement('li');
-                                    nav_li.className = "one_day_file_link"
-                                    nav_li.appendChild(nav_a);
-                                    history_nav.appendChild(nav_li);
+                                        nav_a.addEventListener('click', (e) => {
+                                            console.log(reed_day);
+                                            document.querySelectorAll('.now_scroll').forEach((element) => {
+                                                element.classList.remove('now_scroll');
+                                            });
+                                            e.target.parentNode.classList.add('now_scroll')
+                                            document.getElementById(reed_day).scrollIntoView(true);
+                                        })
+                                        let nav_li = document.createElement('li');
+                                        nav_li.className = "one_day_file_link"
+                                        nav_li.appendChild(nav_a);
+                                        history_nav.appendChild(nav_li);
 
-                                    let histry_ul = document.querySelector('.histry_ul');
-                                    histry_ul.appendChild(one_days_file);
-                                    file_top.push(document.getElementById(reed_day).getBoundingClientRect().top - 80);
-                                    file_bottom.push(document.getElementById(reed_day).getBoundingClientRect().bottom - 80);
+                                        let histry_ul = document.querySelector('.histry_ul');
+                                        histry_ul.appendChild(one_days_file);
+                                        file_top.push(document.getElementById(reed_day).getBoundingClientRect().top - 80);
+                                        file_bottom.push(document.getElementById(reed_day).getBoundingClientRect().bottom - 80);
+                                    }
+                                    
                                 }
-                                
-                            }
+                                return true;
+                            })();
                             array.shift();
                             ReadFile(array);
                         };
@@ -574,7 +599,7 @@ const DeleteLink = (filename, id) => {
 }
 
 const TextSet = () => {
-    search_text = document.querySelector('.text_form').value.toLowerCase()
+    search_text = document.querySelector('.text_form').value.toLowerCase().split(' ')
     PageReload();
     /* 
     CoalReadFile();
@@ -736,7 +761,7 @@ const PageReload = () => {
     }else {
         link += '?';
         if(search_text[0]){
-            let text_link = '&text=' + search_text;
+            let text_link = '&text=' + search_text.join(' ');
             link += text_link;
         }
         if(selected_color[0]){

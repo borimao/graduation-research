@@ -1,0 +1,40 @@
+.pie {
+  position: absolute;
+  left: 50%;
+  width: 50%;
+  height: 100%;
+  -webkit-transform-origin: left center;
+  transform-origin: left center;
+  overflow: hidden;
+}
+
+.pie:before {
+  position: absolute;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  content: '';
+  -webkit-transform-origin: right center;
+  transform-origin: right center;
+}
+
+.pie.large {
+  left: 0;
+  width: 100%;
+  -webkit-transform-origin: center center;
+  transform-origin: center center;
+}
+
+.pie.large:before {
+  left: 0;
+  width: 50%;
+}
+
+.pie.large:after {
+  position: absolute;
+  left: 50%;
+  width: 50%;
+  height: 100%;
+  content: '';
+}
+/*# sourceMappingURL=en.css.map */
